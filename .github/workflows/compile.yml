@@ -34,6 +34,8 @@ jobs:
             ref: "compiled"
       - name: Merge compiled branch & remove /build from local .gitignore
         run: |
+          git config --global user.name 'GitHub Actions (Compile)'
+          git config --global user.email 'Somebody32x2@users.noreply.github.com'
           git merge -X theirs origin/master --allow-unrelated-histories
           grep -v "/build" .gitignore > temp && mv temp .gitignore
       - name: Set up Node
@@ -47,8 +49,6 @@ jobs:
         run: npm run build
       - name: Update
         run: | 
-            git config --global user.name 'GitHub Actions (Compile)'
-            git config --global user.email 'Somebody32x2@users.noreply.github.com'
             cd ./build
             git add .
             git commit -m "GitHub Actions - Compile"
