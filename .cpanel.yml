@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/f95v173bdq8i/public_html/whendoesthisperiod_dev
+    - /bin/cp -R /build $DEPLOYPATH
