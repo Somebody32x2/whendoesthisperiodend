@@ -1,0 +1,56 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Compile to Branch
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ['master']
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'compile'
+  cancel-in-progress: true
+
+jobs:
+  # Single deploy job since we're just deploying
+  compile:
+    environment: development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Master
+        uses: actions/checkout@v3
+        with:
+            ref: "master"
+      - name: Checkout Compiled
+        uses: actions/checkout@v3
+        with:
+            ref: "compiled"
+      - name: Merge compiled branch & remove /build from local .gitignore
+        run: |
+          git config --global user.name 'GitHub Actions (Compile)'
+          git config --global user.email 'Somebody32x2@users.noreply.github.com'
+          git merge -X theirs origin/master --allow-unrelated-histories
+          grep -v "/build" .gitignore > temp && mv temp .gitignore
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21.4.0
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Update
+        run: | 
+            cd ./build
+            git add .
+            git commit -m "GitHub Actions - Compile"
+            git push
+            
