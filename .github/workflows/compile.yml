@@ -26,9 +26,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+            ref: "compiled"
       - name: Merge compiled branch & remove /build from local .gitignore
         run: |
-          git checkout compiled
           git merge -X theirs master
           grep -v "/build" .gitignore > temp && mv temp .gitignore
       - name: Set up Node
