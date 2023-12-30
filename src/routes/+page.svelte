@@ -1,3 +1,4 @@
-<div class="w-full h-[100vh] bg-blue-900"></div>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="w-full h-[100vh] flex items-center justify-center">
+    <h1 class="text-6xl font-black">When Does This Period End?</h1>
+    <p>⚠️️️WIP⚠️</p>
+</div>
