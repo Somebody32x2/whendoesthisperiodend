@@ -34,7 +34,7 @@ jobs:
             ref: "compiled"
       - name: Merge compiled branch & remove /build from local .gitignore
         run: |
-          git merge -X theirs master
+          git merge -X theirs origin/master
           grep -v "/build" .gitignore > temp && mv temp .gitignore
       - name: Set up Node
         uses: actions/setup-node@v3
