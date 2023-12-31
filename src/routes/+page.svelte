@@ -2,4 +2,5 @@
     <h1 class="text-6xl font-black">When Does This Period End?</h1>
     <p class="text-3xl m-10">⚠️️️WIP⚠️</p>
     <p class="text-3xl -mt-10">Coming Soon!</p>
+    <p>Will support multiple schools!</p>
 </div>
