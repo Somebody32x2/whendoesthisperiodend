@@ -5,6 +5,16 @@ export enum ProgressBarType {
     Daily = "daily",
     Periods = "periods",
 }
+export class Period {
+    start: DateTime;
+    end: DateTime;
+    label: string;
+    constructor(start: DateTime, end: DateTime, label: string) {
+        this.start = start;
+        this.end = end;
+        this.label = label;
+    }
+}
 export function getPercentDone(start: DateTime, end: DateTime): number {
     const now = DateTime.now();
     const total = end.diff(start).toMillis();
