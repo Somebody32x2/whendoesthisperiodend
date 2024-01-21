@@ -21,12 +21,18 @@ enum ImperialTimePostfix {
     PM = 12
 }
 export function Time(hours: number | string, minutes: number | undefined =undefined, AmPm: ImperialTimePostfix | undefined =undefined): DateTime {
+    // Assert that hours is a number or string, and if a number, minutes and AmPm are defined
+    if (typeof hours !== "string" && (minutes === undefined || AmPm === undefined)) {
+        throw new Error("If hours is a number, minutes and AmPm must be defined");
+    }
     if (typeof hours === "string") {
         return DateTime.fromFormat(hours, "HH:mm");
-    } else return DateTime.fromObject({
-        hour: hours + AmPm,
-        minute: minutes,
-    });
+    } else { // @ts-ignore
+        return DateTime.fromObject({
+                hour: hours + AmPm,
+                minute: minutes,
+            });
+    }
 }
 export function nextWeekday(weekday: number, time: DateTime, endTime: DateTime): DateTime {
     if (time.weekday === weekday) {

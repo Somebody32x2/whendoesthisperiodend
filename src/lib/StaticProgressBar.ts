@@ -19,11 +19,11 @@ export class StaticProgressBar implements ProgressBar {
     timeLeft: Duration;
 
 
-    constructor(id: string, label: string, start: string, end: string, showDays: boolean, color: SvelteUIColor) {
+    constructor(id: string, label: string, start: DateTime, end: DateTime, showDays: boolean, color: SvelteUIColor) {
         this.id = id;
         this.label = label;
-        this.start = DateTime.fromISO(start); // DateTime inputs give ISO strings
-        this.end = DateTime.fromISO(end);
+        this.start = start; // DateTime inputs give ISO strings
+        this.end = end;
         this.showDays = showDays;
         this.color = color;
 
