@@ -4,7 +4,7 @@ import {DateTime, Interval} from "luxon";
 import {RangesProgressBar} from "$lib/RangesProgressBar";
 import {StaticProgressBar} from "$lib/StaticProgressBar";
 
-let fullSchedule = new FullSchedule(
+export let fullSchedule = new FullSchedule(
     // Normal Schedules
     [
         {
