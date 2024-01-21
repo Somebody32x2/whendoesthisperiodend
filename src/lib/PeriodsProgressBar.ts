@@ -1,11 +1,11 @@
 import {DateTime, Duration} from "luxon";
 import type {ProgressBar} from "$lib/ProgressBar";
-import {getPercentDone, ProgressBarType} from "$lib/Utils";
+import {getPercentDone, nthString, ProgressBarType} from "$lib/Utils";
 import type {SvelteUIColor} from "@svelteuidev/core";
 
 
 export class PeriodsProgressBar implements ProgressBar {
-    type = ProgressBarType.Static;
+    type = ProgressBarType.Periods;
     id: string;
     label: string;
     showDays: boolean;
@@ -39,7 +39,7 @@ export class PeriodsProgressBar implements ProgressBar {
         // Name any "" labels after the n+1(st|nd|rd|th) period
         for (let i = 0; i < this.pLabels.length; i++) {
             if (this.pLabels[i] === "") {
-                this.pLabels[i] = `${i + 1}${i + 1 === 1 ? "st" : (i + 1) % 10 === 2 ? "nd" : i + 1 === 3 ? "rd" : "th"} Period`;
+                this.pLabels[i] = nthString(i) + " Period";
             }
         }
 
