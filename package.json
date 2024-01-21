@@ -28,7 +28,9 @@
 	"dependencies": {
 		"@svelteuidev/composables": "^0.15.4",
 		"@svelteuidev/core": "^0.15.4",
+		"@svelteuidev/dates": "^0.15.4",
 		"@svelteuidev/motion": "^0.15.4",
+		"dayjs": "^1.11.10",
 		"luxon": "^3.4.4"
 	}
 }
