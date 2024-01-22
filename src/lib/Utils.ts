@@ -5,6 +5,7 @@ export enum ProgressBarType {
     Daily = "daily",
     Periods = "periods",
     Ranges = "ranges",
+    Schedule = "schedule",
 }
 export class Period {
     start: DateTime;
@@ -16,7 +17,7 @@ export class Period {
         this.label = label;
     }
 }
-enum ImperialTimePostfix {
+export enum ImperialTimePostfix {
     AM = 0,
     PM = 12
 }
@@ -27,9 +28,9 @@ export function Time(hours: number | string, minutes: number | undefined =undefi
     }
     if (typeof hours === "string") {
         return DateTime.fromFormat(hours, "HH:mm");
-    } else { // @ts-ignore
+    } else {
         return DateTime.fromObject({
-                hour: hours + AmPm,
+                hour: hours + AmPm!,
                 minute: minutes,
             });
     }
