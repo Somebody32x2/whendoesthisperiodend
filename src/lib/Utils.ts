@@ -63,10 +63,9 @@ export function lastWeekday(weekday: number, time: DateTime, endTime: DateTime):
     }
 
 }
-export function getPercentDone(start: DateTime, end: DateTime): number {
-    const now = DateTime.now();
+export function getPercentDone(start: DateTime, end: DateTime, t: DateTime = DateTime.now()): number {
     const total = end.diff(start).toMillis();
-    const done = now.diff(start).toMillis();
+    const done = t.diff(start).toMillis();
     return ((done / total) * 100);
 }
 export function toCurrentDay(time: DateTime): DateTime {

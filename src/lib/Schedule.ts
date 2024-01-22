@@ -1,4 +1,4 @@
-import {lastWeekday, nextWeekday, type Period, ProgressBarType} from "$lib/Utils";
+import {getPercentDone, lastWeekday, nextWeekday, type Period, ProgressBarType} from "$lib/Utils";
 import {DateTime, Duration, Interval, type WeekdayNumbers} from "luxon";
 import type {ProgressBar} from "$lib/ProgressBar";
 
@@ -33,7 +33,7 @@ interface SpecialSchedule extends Schedule {
 }
 
 interface Break extends Schedule {
-    label: String;
+    label: string;
     interval: Interval;
     periods: []
 }
@@ -175,7 +175,7 @@ export class FullSchedule {
             console.error("Please call update() on the FullSchedule object, not a Schedule's bar itself (period, day, week, or break bars)");
         }
         this.bars = {
-            period: this.todaySchedule.periods.length > 0 ?
+            period: this.todaySchedule.periods.length > 0 && DateTime.now() > this.todaySchedule.periods[0].start ?
                 { // Temorarily instantiate a bars, will be updated later to the correct data
                     label: "Period",
                     start: this.todaySchedule.periods[0].start,
@@ -231,12 +231,73 @@ export class FullSchedule {
             year: additionalBars.year,
         }
 
+        if (DateTime.now() < this.todaySchedule.periods[0]!.start) {
+            this.bars.break = {
+                label: this.startOfDay.label,
+                start: this.startOfDay.interval.start!,
+                end: this.startOfDay.interval.end!,
+                color: "blue",
+                update: updateInSchedule,
+                percentDone: 0,
+                timeLeft: Duration.fromMillis(0),
+                type: ProgressBarType.Schedule,
+                id: "break",
+                showDays: false,
+            }
+        }
+
     }
 
     update() {
         for (const bar of additionalProgressBarTypes) {
             // @ts-ignore
             if (this.bars[bar]) this.bars[bar].update();
+        }
+        let now = DateTime.now();
+        // Update bars
+        if (this.bars.day) {
+            this.bars.day.percentDone = getPercentDone(this.bars.day.start, this.bars.day.end, now);
+        }
+        if (this.bars.week) {
+            this.bars.week.percentDone = getPercentDone(this.bars.week.start, this.bars.week.end, now);
+        }
+        if (this.bars.break) {
+            this.bars.break.percentDone = getPercentDone(this.bars.break.start, this.bars.break.end, now);
+            // Check if we have passed start of 1st period and this ends the break
+            if (this.todaySchedule.periods[0].start! < now && this.startOfDay.interval.start == this.bars.break.start) {
+                this.bars.break = undefined;
+                // Initialize to first period
+                this.bars.period = {
+                    label: this.todaySchedule.periods[0].label,
+                    start: this.todaySchedule.periods[0].start,
+                    end: this.todaySchedule.periods[0].end,
+                    color: "blue",
+                    update: () => {
+                        console.error("Please call update() on the FullSchedule object, not a Schedule's bar itself (period, day, week, or break bars)");
+                    },
+                    percentDone: 0,
+                    timeLeft: Duration.fromMillis(0),
+                    type: ProgressBarType.Schedule,
+                    id: "period",
+                    showDays: false,
+                }
+            }
+        }
+        if (this.bars.period) {
+            // Check if we have passed end of last period
+            let currentPeriod = this.todaySchedule.periods.findIndex(period => period.start! > now);
+            if (this.bars.period.end < now && now < this.todaySchedule.periods[currentPeriod + 1]!.start) {
+                // We are between periods
+                this.bars.period.label = "Until " + this.todaySchedule.periods[currentPeriod + 1]!.label;
+                this.bars.period.start = this.todaySchedule.periods[currentPeriod]!.end;
+                this.bars.period.end = this.todaySchedule.periods[currentPeriod + 1]!.start;
+            }
+            // Check if we should just advance to the next period
+            if (this.todaySchedule.periods[currentPeriod+1]!.start < now) {
+                this.bars.period.label = this.todaySchedule.periods[currentPeriod + 1]!.label;
+                this.bars.period.start = this.todaySchedule.periods[currentPeriod + 1]!.start;
+                this.bars.period.end = this.todaySchedule.periods[currentPeriod + 1]!.end;
+            }
         }
     }
 }
