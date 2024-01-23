@@ -34,6 +34,7 @@ export class StaticProgressBar implements ProgressBar {
     update = () => {
         this.percentDone = getPercentDone(this.start, this.end);
         this.timeLeft = this.end.diffNow();
+        // console.log({percentDone: this.percentDone, start: this.start, end: this.end});
     }
 
 

@@ -5,6 +5,7 @@ export enum ProgressBarType {
     Daily = "daily",
     Periods = "periods",
     Ranges = "ranges",
+    Schedule = "schedule",
 }
 export class Period {
     start: DateTime;
@@ -16,7 +17,7 @@ export class Period {
         this.label = label;
     }
 }
-enum ImperialTimePostfix {
+export enum ImperialTimePostfix {
     AM = 0,
     PM = 12
 }
@@ -26,10 +27,10 @@ export function Time(hours: number | string, minutes: number | undefined =undefi
         throw new Error("If hours is a number, minutes and AmPm must be defined");
     }
     if (typeof hours === "string") {
-        return DateTime.fromFormat(hours, "HH:mm");
-    } else { // @ts-ignore
+        return DateTime.fromFormat(hours.padStart(5, "0"), "HH:mm");
+    } else {
         return DateTime.fromObject({
-                hour: hours + AmPm,
+                hour: hours + AmPm!,
                 minute: minutes,
             });
     }
@@ -62,18 +63,16 @@ export function lastWeekday(weekday: number, time: DateTime, endTime: DateTime):
     }
 
 }
-export function getPercentDone(start: DateTime, end: DateTime): number {
-    const now = DateTime.now();
+export function getPercentDone(start: DateTime, end: DateTime, t: DateTime = DateTime.now()): number {
     const total = end.diff(start).toMillis();
-    const done = now.diff(start).toMillis();
+    const done = t.diff(start).toMillis();
     return ((done / total) * 100);
 }
-export function toCurrentDay(time: DateTime): DateTime {
-    const dateTime = DateTime.now();
+export function toCurrentDay(time: DateTime, currentTime= DateTime.now()): DateTime {
     return DateTime.fromObject({
-        year: dateTime.year,
-        month: dateTime.month,
-        day: dateTime.day,
+        year: currentTime.year,
+        month: currentTime.month,
+        day: currentTime.day,
         hour: time.hour,
         minute: time.minute,
         second: time.second,
