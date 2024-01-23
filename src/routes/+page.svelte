@@ -53,7 +53,7 @@
 <!--        />-->
         <!--{#key updateOnce}-->
             {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
-<!--                <p>{barInterval}</p>-->
+                <p>{barInterval}</p>
                 {#if schedule.bars[barInterval] !== undefined}
 
                     <div class="mt-10">

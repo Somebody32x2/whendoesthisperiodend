@@ -12,16 +12,16 @@ export let fullSchedule = new FullSchedule(
             days: [1, 2, 3, 4],
             periods: [{"start": Time("08:30"), end: Time("09:19"), "label": "1st Period"}, // Add 1st period to satisfy the "at least one period" requirement
                 ...[["09:23", "10:12"], ["10:16", "11:05"], ["11:09", "12:02"], ["12:55", "13:44"], ["13:48", "14:37"], ["14:41", "15:30"]]
-                    .map((value, index) => new Period(Time(value[0]), Time(value[1]), `${nthString(index + 2)} Period`))],
+                    .map((value, index) => new Period(Time(value[0]), Time(value[1]), index + 2 !== 4 ? nthString(index + (index+2 < 5  ? 2 : 1)) + " Period": "Power Hour"))],
             endWithWeekend: false
         },
         {
             label: "Friday",
             days: [5],
             periods: [
-                {start: Time("8:30"), end: Time("9:08"), label: "1st Period"},
-                {start: Time("9:12"), end: Time("9:50"), label: "2nd Period"},
-                {start: Time("9:54"), end: Time("10:32"), label: "3rd Period"},
+                {start: Time("08:30"), end: Time("9:08"), label: "1st Period"},
+                {start: Time("09:12"), end: Time("9:50"), label: "2nd Period"},
+                {start: Time("09:54"), end: Time("10:32"), label: "3rd Period"},
                 {start: Time("10:36"), end: Time("11:14"), label: "4th Period"},
                 {start: Time("11:14"), end: Time("11:43"), label: "Homeroom/Lunch"},
                 {start: Time("11:44"), end: Time("12:13"), label: "Lunch/Homeroom"},

@@ -27,7 +27,7 @@ export function Time(hours: number | string, minutes: number | undefined =undefi
         throw new Error("If hours is a number, minutes and AmPm must be defined");
     }
     if (typeof hours === "string") {
-        return DateTime.fromFormat(hours, "HH:mm");
+        return DateTime.fromFormat(hours.padStart(5, "0"), "HH:mm");
     } else {
         return DateTime.fromObject({
                 hour: hours + AmPm!,
@@ -68,12 +68,11 @@ export function getPercentDone(start: DateTime, end: DateTime, t: DateTime = Dat
     const done = t.diff(start).toMillis();
     return ((done / total) * 100);
 }
-export function toCurrentDay(time: DateTime): DateTime {
-    const dateTime = DateTime.now();
+export function toCurrentDay(time: DateTime, currentTime= DateTime.now()): DateTime {
     return DateTime.fromObject({
-        year: dateTime.year,
-        month: dateTime.month,
-        day: dateTime.day,
+        year: currentTime.year,
+        month: currentTime.month,
+        day: currentTime.day,
         hour: time.hour,
         minute: time.minute,
         second: time.second,
