@@ -59,7 +59,7 @@
                     <div class="mt-10">
                         {#key updateCount}
                         <div><b>{schedule.bars[barInterval].percentDone.toFixed(7)}</b>% done with {schedule.bars[barInterval].label}
-                            (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? "d" : ""} 'days, 'hh:mm:ss:SSS`)}</b> left)
+                            (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? "d' days, '" : ""}hh:mm:ss:SSS`).replaceAll('-', '')}</b> {schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'})
                         </div>
                         {/key}
                         <Progress
