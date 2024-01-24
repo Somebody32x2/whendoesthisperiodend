@@ -1,4 +1,4 @@
-import {getPercentDone, lastWeekday, nextWeekday, Time, type Period, ProgressBarType, toCurrentDay} from "$lib/Utils";
+import {getPercentDone, lastWeekday, nextWeekday, type Period, ProgressBarType, toCurrentDay} from "$lib/Utils";
 import {DateTime, Duration, Interval, type WeekdayNumbers} from "luxon";
 import type {ProgressBar} from "$lib/ProgressBar";
 
@@ -126,7 +126,11 @@ export class FullSchedule {
             // Check if we are in a normal schedule
             if (!foundSchedule) for (const normalSchedule of normalSchedules) {
                 if (normalSchedule.days.includes(<1 | 2 | 3 | 4 | 5 | 6 | 7>time.weekday)) {
-                    todaySchedule = normalSchedule;
+                    todaySchedule = {
+                        label: normalSchedule.label,
+                        periods: [...normalSchedule.periods],
+
+                    };
                     // Convert to the time's day
                     todaySchedule.periods = todaySchedule.periods.map(period => {
                         return {
@@ -190,7 +194,7 @@ export class FullSchedule {
         }
         let now = DateTime.now();
         this.bars = {
-            period: this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start ?
+            period: this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length-1].end ?
                 { // Temorarily instantiate a bars, will be updated later to the correct data
                     label: "Period",
                     start: this.todaySchedule.periods[0].start,
@@ -203,7 +207,7 @@ export class FullSchedule {
                     id: "period",
                     showDays: false,
                 } : undefined,
-            break: this.todaySchedule.periods.length === 0 ? // If no periods, show break
+            break: !(this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end) ? // If no periods, show break
                 {
                     label: "Break",
                     start: DateTime.now(),
@@ -248,19 +252,17 @@ export class FullSchedule {
         console.log({origThis: this, bars: this.bars, todaySchedule: this.todaySchedule, endOfDay: this.endOfDay, startOfDay: this.startOfDay, schLen: this.todaySchedule.periods.length})
 
         if (now < this.todaySchedule.periods[0]!.start) {
-            this.bars.break = {
-                label: this.startOfDay.label,
-                start: this.startOfDay.interval.start!,
-                end: this.startOfDay.interval.end!,
-                color: "blue",
-                update: updateInSchedule,
-                percentDone: 0,
-                timeLeft: Duration.fromMillis(0),
-                type: ProgressBarType.Schedule,
-                id: "break",
-                showDays: false,
-            }
+            this.bars.break!.label = this.startOfDay.label
+            this.bars.break!.start = this.startOfDay.interval.start!
+            this.bars.break!.end = this.startOfDay.interval.end!
+            this.bars.break!.showDays = false
             console.log("Starting Pre-School Break!")
+        } else if (now > this.todaySchedule.periods[this.todaySchedule.periods.length - 1]!.end) {
+            this.bars.break!.label = this.endOfDay.label
+            this.bars.break!.start = this.endOfDay.interval.start!
+            this.bars.break!.end = this.endOfDay.interval.end!
+            this.bars.break!.showDays = false
+            console.log("Starting Post-School Break!")
         }
 
         if (this.todaySchedule.periods.length !== 0) {
