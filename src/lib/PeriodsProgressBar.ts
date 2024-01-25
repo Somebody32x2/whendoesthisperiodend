@@ -12,6 +12,7 @@ export class PeriodsProgressBar implements ProgressBar {
     color: SvelteUIColor;
     start: DateTime;
     end: DateTime;
+    showEndpoints: boolean;
 
     pStarts: DateTime[];
     pEnds: DateTime[];
@@ -20,13 +21,14 @@ export class PeriodsProgressBar implements ProgressBar {
     percentDone: number;
     timeLeft: Duration;
 
-    constructor(id: string, start: string[], end: string[], periodLabels: string[], showDays: boolean, color: SvelteUIColor) {
+    constructor(id: string, start: string[], end: string[], periodLabels: string[], showDays: boolean, color: SvelteUIColor, showEndpoints: boolean) {
         this.id = id;
         this.pLabels = periodLabels;
         this.pStarts = start.map( e => DateTime.fromISO(e)); // DateTime inputs give ISO strings
         this.pEnds = end.map(e => DateTime.fromISO(e));
         this.showDays = showDays;
         this.color = color;
+        this.showEndpoints = showEndpoints;
 
         // Temporarily set vars to first period
         this.start = this.pStarts[0];

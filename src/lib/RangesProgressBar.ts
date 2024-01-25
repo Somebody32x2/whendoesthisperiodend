@@ -12,6 +12,7 @@ export class RangesProgressBar implements ProgressBar {
     color: SvelteUIColor;
     start: DateTime;
     end: DateTime;
+    showEndpoints: boolean;
 
     ranges: [DateTime, DateTime][];
     rangeLabels: string[];
@@ -20,12 +21,13 @@ export class RangesProgressBar implements ProgressBar {
     timeLeft: Duration;
 
     // RangeLabels is optional, if not provided, will be filled in nth eachRangeLabel, and if neither provided, will be filled in as nth Range
-    constructor(id: string, ranges: [DateTime, DateTime][], rangeLabels: string[] | undefined, showDays: boolean, color: SvelteUIColor, eachRangeLabel: string | undefined=undefined) {
+    constructor(id: string, ranges: [DateTime, DateTime][], rangeLabels: string[] | undefined, showDays: boolean, color: SvelteUIColor, showEndpoints: boolean, eachRangeLabel: string | undefined=undefined) {
         this.id = id;
         this.rangeLabels = rangeLabels ?? ranges.map(_ => ""); // If no labels, use empty strings, will be filled in later
         this.ranges = ranges;
         this.showDays = showDays;
         this.color = color;
+        this.showEndpoints = showEndpoints;
 
         // Temporarily set vars to first period
         this.start = this.ranges[0][0];

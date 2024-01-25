@@ -9,19 +9,21 @@ export class DailyProgressBar implements ProgressBar {
     label: string;
     showDays: boolean;
     color: SvelteUIColor;
+    showEndpoints: boolean;
 
     start: DateTime;
     end: DateTime;
 
     percentDone: number;
     timeLeft: Duration;
-    constructor(id: string, label: string, start: string, end: string, showDays: boolean, color: SvelteUIColor) {
+    constructor(id: string, label: string, start: string, end: string, showDays: boolean, color: SvelteUIColor, showEndpoints: boolean) {
         this.id = id;
         this.label = label;
         this.start = DateTime.fromFormat(start, "HH:mm"); // Time inputs give HH:mm strings
         this.end = DateTime.fromFormat(end, "HH:mm");
         this.showDays = showDays;
         this.color = color;
+        this.showEndpoints = showEndpoints;
 
         this.percentDone = 0;
         this.timeLeft = Duration.fromMillis(0);

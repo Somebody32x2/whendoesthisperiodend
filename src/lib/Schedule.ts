@@ -152,7 +152,7 @@ export class FullSchedule {
                     } else if (!shallowFindScheduleOnly) {
                         // end of day is the next day
                         endOfDay = {
-                            label: "Tomorrow",
+                            label: "Until Tomorrow",
                             interval: Interval.fromDateTimes(
                                 normalSchedule.periods[normalSchedule.periods.length - 1].end,
                                 findSchedule(time.plus({days: 1}), true).todaySchedule.periods[0].start // TODO: Stop this from modifying the todaySchedule.periods array
@@ -199,50 +199,54 @@ export class FullSchedule {
                     label: "Period",
                     start: this.todaySchedule.periods[0].start,
                     end: this.todaySchedule.periods[0].end,
-                    color: "blue",
+                    color: "violet",
                     update: updateInSchedule,
                     percentDone: 0,
                     timeLeft: Duration.fromMillis(0),
                     type: ProgressBarType.Schedule,
                     id: "period",
                     showDays: false,
+                    showEndpoints: true
                 } : undefined,
             break: !(this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end) ? // If no periods, show break
                 {
                     label: "Break",
                     start: DateTime.now(),
                     end: DateTime.now().plus({hours: 1}),
-                    color: "blue",
+                    color: "violet",
                     update: updateInSchedule,
                     percentDone: 0,
                     timeLeft: Duration.fromMillis(0),
                     type: ProgressBarType.Schedule,
                     id: "break",
                     showDays: true,
+                    showEndpoints: false
                 } : undefined,
             day: this.todaySchedule.periods.length == 0 ? undefined : { // If periods, show day bar (this also means that after the break starts, the day bar will be shown for the rest of the day)
                 label: "Day",
                 start: this.todaySchedule.periods[0].start,
                 end: this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end,
-                color: "green",
+                color: "red",
                 update: updateInSchedule,
                 percentDone: 0,
                 timeLeft: Duration.fromMillis(0),
                 type: ProgressBarType.Schedule,
                 id: "day",
                 showDays: false,
+                showEndpoints: true
             },
             week: this.todaySchedule.periods.length == 0 ? undefined : {
                 label: "Week",
                 start: this.startOfDay.interval.start!,
                 end: this.endOfDay.interval.end!,
-                color: "yellow",
+                color: "orange",
                 update: updateInSchedule,
                 percentDone: 0,
                 timeLeft: Duration.fromMillis(0),
                 type: ProgressBarType.Schedule,
                 id: "week",
                 showDays: false,
+                showEndpoints: false
             },
             interim: additionalBars.interim,
             quarter: additionalBars.quarter,
@@ -329,6 +333,7 @@ export class FullSchedule {
                     type: ProgressBarType.Schedule,
                     id: "period",
                     showDays: false,
+                    showEndpoints: true
                 }
 
                 console.log("Starting Day!")
@@ -372,6 +377,28 @@ export class FullSchedule {
             // Update percent done and time left
             this.bars.period.percentDone = getPercentDone(this.bars.period.start, this.bars.period.end, now);
             this.bars.period.timeLeft = this.bars.period.end.diff(now);
+
+            // Check if we have passed end of last period and this ends the day, so we should start the break
+            if (this.bars.period.end < now && this.endOfDay.interval.end == this.bars.period.end) {
+                this.bars.period = undefined;
+                // Initialize to break
+                this.bars.break = {
+                    label: this.endOfDay.label,
+                    start: this.endOfDay.interval.start!,
+                    end: this.endOfDay.interval.end!,
+                    color: "violet",
+                    update: () => {
+                        console.error("Please call update() on the FullSchedule object, not a Schedule's bar itself (period, day, week, or break bars)");
+                    },
+                    percentDone: 0,
+                    timeLeft: Duration.fromMillis(0),
+                    type: ProgressBarType.Schedule,
+                    id: "break",
+                    showDays: true,
+                    showEndpoints: false
+                }
+                console.log("Starting Post-School Break!")
+            }
         }
     }
 }
