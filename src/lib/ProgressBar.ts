@@ -15,6 +15,7 @@ export interface ProgressBar {
     end: DateTime;
     timeLeft: Duration;
     percentDone: number;
+    showEndpoints: boolean;
 }
 
 

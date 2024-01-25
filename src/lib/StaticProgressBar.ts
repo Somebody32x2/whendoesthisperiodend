@@ -10,6 +10,7 @@ export class StaticProgressBar implements ProgressBar {
     label: string;
     showDays: boolean;
     color: SvelteUIColor;
+    showEndpoints: boolean;
 
     start: DateTime;
     end: DateTime;
@@ -19,13 +20,14 @@ export class StaticProgressBar implements ProgressBar {
     timeLeft: Duration;
 
 
-    constructor(id: string, label: string, start: DateTime, end: DateTime, showDays: boolean, color: SvelteUIColor) {
+    constructor(id: string, label: string, start: DateTime, end: DateTime, showDays: boolean, color: SvelteUIColor, showEndpoints: boolean) {
         this.id = id;
         this.label = label;
         this.start = start; // DateTime inputs give ISO strings
         this.end = end;
         this.showDays = showDays;
         this.color = color;
+        this.showEndpoints = showEndpoints;
 
         this.percentDone = 0;
         this.timeLeft = Duration.fromMillis(0);
@@ -36,6 +38,7 @@ export class StaticProgressBar implements ProgressBar {
         this.timeLeft = this.end.diffNow();
         // console.log({percentDone: this.percentDone, start: this.start, end: this.end});
     }
+
 
 
 

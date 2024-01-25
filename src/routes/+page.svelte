@@ -30,37 +30,22 @@
     // let value1 = 0; // It seems we can only bind to a variable, not a property, so we need to use a variable
     // $: value1 = yearBar.percentDone;
 </script>
-y]y]y]<div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white">
-    <h1 class="text-6xl font-black mx-10">When Does This Period End?</h1>
-    <p class="text-3xl m-10">⚠️️️WIP⚠️</p>
-    <p class="text-3xl -mt-10">Coming Soon!</p>
-    <p>Will support multiple schools!</p>
+<div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white">
+    <h1 class="text-5xl font-black mx-10">When Does This Period End?</h1>
+    <p class="text-3xl m-2">⚠️️️WIP⚠️</p>
+<!--    <p class="text-3xl -mt-10">Coming Soon!</p>-->
+<!--    <p>Will support multiple schools!</p>-->
     <div class="w-full md:w-[75%] text-center mt-10">
-        <!--{#key updateCount}-->
-<!--            <div><b>{yearBar.percentDone.toFixed(7)}</b>% done with {yearBar.label}-->
-<!--                (<b>{yearBar.timeLeft.toFormat(`${yearBar.showDays ? "d" : ""} 'days, 'hh:mm:ss:SSS`)}</b> left)-->
-<!--            </div>-->
-<!--        {/key}-->
-<!--        <Progress-->
-<!--                tween-->
-<!--                bind:value={value1}-->
-<!--                color={yearBar.color}-->
-<!--                size="xs"-->
-<!--                radius="sm"-->
-<!--                striped-->
-<!--                animate-->
-<!--                class="w-full py-2"-->
-<!--        />-->
         <!--{#key updateOnce}-->
             {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
-                <p>{barInterval}</p>
+<!--                <p>{barInterval}</p>-->
                 {#if schedule.bars[barInterval] !== undefined}
 
-                    <div class="mt-10">
+                    <div class="mt-10 px-2">
                         {#key updateCount}
-                        <div><b>{schedule.bars[barInterval].percentDone.toFixed(7)}</b>% done with {schedule.bars[barInterval].label}
-                            (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? "d' days, '" : ""}hh:mm:ss:SSS`).replaceAll('-', '')}</b> {schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'})
-                        </div>
+                        <p class="lg:text-2xl"><b>{schedule.bars[barInterval].percentDone.toFixed(7)}</b>% done with {schedule.bars[barInterval].label}
+                            (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? "d' days, '" : ""}hh:mm:ss:SSS`).replaceAll(" ", "\xa0").replaceAll('-', '')}</b>&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<b>{schedule.bars[barInterval].showEndpoints ? ` | ${schedule.bars[barInterval].start.toFormat("h:mma")} - ${schedule.bars[barInterval].end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
+                        </p>
                         {/key}
                         <Progress
                                 tween
