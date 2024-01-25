@@ -30,7 +30,7 @@
     // let value1 = 0; // It seems we can only bind to a variable, not a property, so we need to use a variable
     // $: value1 = yearBar.percentDone;
 </script>
-<div class="w-full h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white">
+y]y]y]<div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white">
     <h1 class="text-6xl font-black mx-10">When Does This Period End?</h1>
     <p class="text-3xl m-10">⚠️️️WIP⚠️</p>
     <p class="text-3xl -mt-10">Coming Soon!</p>

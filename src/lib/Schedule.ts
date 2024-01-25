@@ -336,7 +336,22 @@ export class FullSchedule {
         }
         if (this.bars.period) {
             // Check if we have passed end of last period
-            let currentPeriod = this.todaySchedule.periods.findIndex(period => period.start! > now);
+            let currentPeriod = -1; // The last period for which now > start
+            for (let i = this.todaySchedule.periods.length-1; i >= 0; i--) {
+                if (now > this.todaySchedule.periods[i]!.start) {
+                    currentPeriod = i;
+                    break;
+                }
+            }
+            // Check if we are in the period
+            if (this.todaySchedule.periods[currentPeriod]!.start < now && now < this.todaySchedule.periods[currentPeriod]!.end) {
+                this.bars.period.label = this.todaySchedule.periods[currentPeriod]!.label;
+                this.bars.period.start = this.todaySchedule.periods[currentPeriod]!.start;
+                this.bars.period.end = this.todaySchedule.periods[currentPeriod]!.end;
+
+                // console.log("In Period!")
+            }
+            // console.log({currentPeriod: currentPeriod, todaySchedule: this.todaySchedule})
             if (this.bars.period.end < now && now < this.todaySchedule.periods[currentPeriod + 1]!.start) {
                 // We are between periods
                 this.bars.period.label = "Until " + this.todaySchedule.periods[currentPeriod + 1]!.label;
@@ -353,6 +368,10 @@ export class FullSchedule {
 
                 console.log("Next Period!")
             }
+
+            // Update percent done and time left
+            this.bars.period.percentDone = getPercentDone(this.bars.period.start, this.bars.period.end, now);
+            this.bars.period.timeLeft = this.bars.period.end.diff(now);
         }
     }
 }
