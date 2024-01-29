@@ -16,6 +16,9 @@
         updateCount++;
         updateOnce++;
         setInterval(() => {
+            document.title = `${schedule.bars[scheduleBarTypes[0]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[0]].timeLeft.toFormat(`h:mm:ss`)}`;
+        }, 1000)
+        setInterval(() => {
             // yearBar.update();
             schedule.update();
             for (let i = 0; i < scheduleBarTypes.length; i++) {
