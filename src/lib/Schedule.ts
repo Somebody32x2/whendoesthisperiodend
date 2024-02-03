@@ -255,13 +255,13 @@ export class FullSchedule {
         }
         console.log({origThis: this, bars: this.bars, todaySchedule: this.todaySchedule, endOfDay: this.endOfDay, startOfDay: this.startOfDay, schLen: this.todaySchedule.periods.length})
 
-        if (now < this.todaySchedule.periods[0]!.start) {
+        if (now < this.todaySchedule.periods[0]?.start) {
             this.bars.break!.label = this.startOfDay.label
             this.bars.break!.start = this.startOfDay.interval.start!
             this.bars.break!.end = this.startOfDay.interval.end!
             this.bars.break!.showDays = false
             console.log("Starting Pre-School Break!")
-        } else if (now > this.todaySchedule.periods[this.todaySchedule.periods.length - 1]!.end) {
+        } else if (now > this.todaySchedule.periods[this.todaySchedule.periods.length - 1]?.end) {
             this.bars.break!.label = this.endOfDay.label
             this.bars.break!.start = this.endOfDay.interval.start!
             this.bars.break!.end = this.endOfDay.interval.end!
@@ -317,7 +317,7 @@ export class FullSchedule {
             this.bars.break.percentDone = getPercentDone(this.bars.break.start, this.bars.break.end, now);
             this.bars.break.timeLeft = this.bars.break.end.diff(now);
             // Check if we have passed start of 1st period and this ends the break
-            if (this.todaySchedule.periods[0].start! < now && this.startOfDay.interval.start == this.bars.break.start) {
+            if (this.todaySchedule.periods[0]?.start < now && this.startOfDay.interval.start == this.bars.break.start) {
                 this.bars.break = undefined;
                 // Initialize to first period
                 this.bars.period = {
@@ -343,7 +343,7 @@ export class FullSchedule {
             // Check if we have passed end of last period
             let currentPeriod = -1; // The last period for which now > start
             for (let i = this.todaySchedule.periods.length-1; i >= 0; i--) {
-                if (now > this.todaySchedule.periods[i]!.start) {
+                if (now > this.todaySchedule.periods[i]?.start) {
                     currentPeriod = i;
                     break;
                 }
