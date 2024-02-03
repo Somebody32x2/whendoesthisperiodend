@@ -76,10 +76,7 @@ export class FullSchedule {
         // this.specialSchedules = specialSchedules;
         // this.breaks = breaks;
         // Finds the schedule and end of day for the given time, or schedule and weekend break if shallowFindScheduleOnly is true
-        function findSchedule(time: DateTime = DateTime.now(), shallowFindScheduleOnly: boolean = false): {
-            todaySchedule: Schedule,
-            endOfDay: Break
-        } {
+        function findSchedule(time: DateTime = DateTime.now(), shallowFindScheduleOnly: boolean = false): { todaySchedule: Schedule, endOfDay: Break } {
             let foundSchedule = false;
             let todaySchedule: Schedule;
             let endOfDay: Break;
@@ -255,6 +252,7 @@ export class FullSchedule {
         }
         console.log({origThis: this, bars: this.bars, todaySchedule: this.todaySchedule, endOfDay: this.endOfDay, startOfDay: this.startOfDay, schLen: this.todaySchedule.periods.length})
 
+        // Set up the break bar
         if (now < this.todaySchedule.periods[0]?.start) {
             this.bars.break!.label = this.startOfDay.label
             this.bars.break!.start = this.startOfDay.interval.start!
@@ -268,7 +266,15 @@ export class FullSchedule {
             this.bars.break!.showDays = false
             console.log("Starting Post-School Break!")
         }
+        if (this.todaySchedule.periods.length === 0) {
+            this.bars.break!.label = this.endOfDay.label
+            this.bars.break!.start = this.endOfDay.interval.start!
+            this.bars.break!.end = this.endOfDay.interval.end!
+            this.bars.break!.showDays = true
+            console.log("Starting Break!")
+        }
 
+        // Week Bounds
         if (this.todaySchedule.periods.length !== 0) {
             // Find week start and end (working backwards and forward from today, if today is a weekday)
             // Work backwards from today until finding the most previous day that has a schedule
@@ -295,6 +301,7 @@ export class FullSchedule {
             this.bars.week.end = weekEnd;
             console.log(this.bars.week?.start, this.bars.week?.end)
         }
+
         console.log({this: this, bars: this.bars})
     }
 
