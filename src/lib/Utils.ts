@@ -55,11 +55,11 @@ export function lastWeekday(weekday: number, time: DateTime, endTime: DateTime):
     if (time.weekday === weekday) {
         return endTime;
     }
-    if (weekday > time.weekday) {
-        return time.minus({days: weekday - time.weekday}).set({hour: endTime.hour, minute: endTime.minute});
-    }
-    else {
-        return time.minus({days: weekday - time.weekday + 7}).set({hour: endTime.hour, minute: endTime.minute});
+    // find the most recent weekday before the time and set the hours and minutes
+    if (weekday < time.weekday) {
+        return time.minus({days: time.weekday - weekday}).set({hour: endTime.hour, minute: endTime.minute});
+    } else {
+        return time.minus({days: time.weekday - weekday + 7}).set({hour: endTime.hour, minute: endTime.minute});
     }
 
 }
