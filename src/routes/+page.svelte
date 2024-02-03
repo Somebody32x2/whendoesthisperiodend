@@ -17,7 +17,9 @@
         updateOnce++;
         setInterval(() => {
             if (schedule.bars[scheduleBarTypes[0]]) document.title = `${schedule.bars[scheduleBarTypes[0]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[0]].timeLeft.toFormat(`h:mm:ss`)}`;
-            else {document.title = "When Does This Period End?";}
+            else {
+                document.title = "When Does This Period End?";
+            }
         }, 1000)
         setInterval(() => {
             // yearBar.update();
@@ -37,33 +39,36 @@
 <div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white">
     <h1 class="text-5xl font-black mx-10">When Does This Period End?</h1>
     <p class="text-3xl m-2">⚠️️️WIP⚠️</p>
-<!--    <p class="text-3xl -mt-10">Coming Soon!</p>-->
-<!--    <p>Will support multiple schools!</p>-->
-    <div class="w-full md:w-[75%] text-center mt-10">
-        <!--{#key updateOnce}-->
-            {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
-<!--                <p>{barInterval}</p>-->
-                {#if schedule.bars[barInterval] !== undefined}
+    <div class="w-full md:w-[75%] text-center my-10">
+        {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
+            <!--                <p>{barInterval}</p>-->
+            {#if schedule.bars[barInterval] !== undefined}
 
-                    <div class="mt-10 px-2">
-                        {#key updateCount}
-                        <p class="lg:text-2xl"><b>{schedule.bars[barInterval].percentDone.toFixed(7)}</b>% done with {schedule.bars[barInterval].label}
-                            (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? "d' days, '" : ""}hh:mm:ss:SSS`).replaceAll(" ", "\xa0").replaceAll('-', '')}</b>&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<b>{schedule.bars[barInterval].showEndpoints ? ` | ${schedule.bars[barInterval].start.toFormat("h:mma")} - ${schedule.bars[barInterval].end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
-                        </p>
-                        {/key}
-                        <Progress
-                                tween
-                                bind:value={scheduleValues[index]}
-                                color={schedule.bars[barInterval].color}
-                                size="xs"
-                                radius="sm"
-                                striped
-                                animate
-                                class="w-full py-2"
-                        />
-                    </div>
-                {/if}
-            {/each}
-        <!--{/key}-->
+                <div class="mt-10 px-2">
+                    {#key updateCount}
+                        <div class="text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
+                            <p class="lg:mx-2"><b>{schedule.bars[barInterval].percentDone.toFixed(7)}</b>% done
+                                with {schedule.bars[barInterval].label}</p>
+                            <p>
+                                (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? `d' day${+schedule.bars[barInterval].timeLeft.toFormat("d") > 1 ? "s" : ""}, '` : ""}hh:mm:ss:SSS`)
+                                .replaceAll(" ", "\xa0").replaceAll('-', '')}</b><!--
+                                -->&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
+                                --><b>{schedule.bars[barInterval].showEndpoints ? ` | ${schedule.bars[barInterval].start.toFormat("h:mma")} - ${schedule.bars[barInterval].end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
+                            </p>
+                        </div>
+                    {/key}
+                    <Progress
+                            tween
+                            bind:value={scheduleValues[index]}
+                            color={schedule.bars[barInterval].color}
+                            size="xs"
+                            radius="sm"
+                            striped
+                            animate
+                            class="w-full py-2"
+                    />
+                </div>
+            {/if}
+        {/each}
     </div>
 </div>
