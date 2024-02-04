@@ -36,7 +36,8 @@
     // let value1 = 0; // It seems we can only bind to a variable, not a property, so we need to use a variable
     // $: value1 = yearBar.percentDone;
 </script>
-<div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white">
+<div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white relative">
+    <a class="underline absolute top-0 right-1" href="/whendoesthisperiodend_old">Back to Old Version</a>
     <h1 class="text-5xl font-black mx-10">When Does This Period End?</h1>
     <p class="text-3xl m-2">⚠️️️WIP⚠️</p>
     <div class="w-full md:w-[75%] text-center my-10">
@@ -50,7 +51,7 @@
                             <p class="lg:mx-2"><b>{schedule.bars[barInterval].percentDone.toFixed(7)}</b>% done
                                 with {schedule.bars[barInterval].label}</p>
                             <p>
-                                (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${schedule.bars[barInterval].showDays ? `d' day${+schedule.bars[barInterval].timeLeft.toFormat("d") > 1 ? "s" : ""}, '` : ""}hh:mm:ss:SSS`)
+                                (<b>{schedule.bars[barInterval].timeLeft.toFormat(`${+schedule.bars[barInterval].timeLeft.toFormat("d") > 0 ? `d' day${+schedule.bars[barInterval].timeLeft.toFormat("d") !== 1 ? "s" : ""}, '` : ""}hh:mm:ss:SSS`)
                                 .replaceAll(" ", "\xa0").replaceAll('-', '')}</b><!--
                                 -->&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
                                 --><b>{schedule.bars[barInterval].showEndpoints ? ` | ${schedule.bars[barInterval].start.toFormat("h:mma")} - ${schedule.bars[barInterval].end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
