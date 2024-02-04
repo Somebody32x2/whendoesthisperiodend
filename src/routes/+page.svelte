@@ -39,7 +39,7 @@
 <div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white relative">
     <a class="underline absolute top-0 right-1" href="/whendoesthisperiodend_old">Back to Old Version</a>
     <h1 class="text-5xl font-black mx-10">When Does This Period End?</h1>
-    <p class="text-3xl m-2">⚠️️️WIP⚠️</p>
+<!--    <p class="text-3xl m-2">⚠️️️WIP⚠️</p>-->
     <div class="w-full md:w-[75%] text-center my-10">
         {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
             <!--                <p>{barInterval}</p>-->
