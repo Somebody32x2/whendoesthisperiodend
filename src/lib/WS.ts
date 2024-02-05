@@ -1,5 +1,5 @@
 import {FullSchedule} from "$lib/Schedule";
-import {ImperialTimePostfix, nthString, Period, Time} from "$lib/Utils";
+import {ImperialTimePostfix, Time} from "$lib/Utils";
 import {DateTime, Interval} from "luxon";
 import {RangesProgressBar} from "$lib/RangesProgressBar";
 import {StaticProgressBar} from "$lib/StaticProgressBar";
@@ -11,8 +11,13 @@ export let fullSchedule = new FullSchedule(
             label: "Weekday",
             days: [1, 2, 3, 4],
             periods: [{"start": Time("08:30"), end: Time("09:19"), "label": "1st Period"}, // Add 1st period to satisfy the "at least one period" requirement
-                ...[["09:23", "10:12"], ["10:16", "11:05"], ["11:09", "12:02"], ["12:55", "13:44"], ["13:48", "14:37"], ["14:41", "15:30"]]
-                    .map((value, index) => new Period(Time(value[0]), Time(value[1]), index + 2 !== 4 ? nthString(index + (index+2 < 5  ? 2 : 1)) + " Period": "Power Hour"))],
+                {start: Time("09:23"), end: Time("10:12"), label: "2nd Period"},
+                {start: Time("10:16"), end: Time("11:05"), label: "3rd Period"},
+                {start: Time("11:09"), end: Time("12:02"), label: "4th Period"},
+                {start: Time("12:02"), end: Time("12:51"), label: "Power Hour"},
+                {start: Time("12:55"), end: Time("13:44"), label: "5th Period"},
+                {start: Time("13:48"), end: Time("14:37"), label: "6th Period"},
+                {start: Time("14:41"), end: Time("15:30"), label: "7th Period"}],
             endWithWeekend: false
         },
         {
@@ -42,9 +47,9 @@ export let fullSchedule = new FullSchedule(
                 DateTime.fromISO("2024-05-24")
             ],
             specificDayLabels: [
-                ["Period #5 Exam ", "Power Hour" ,"Period #6 Exam"],
-                ["Period #3 Exam ", "Power Hour" ,"Period #4 Exam"],
-                ["Period #1 Exam ", "Power Hour" ,"Period #2 Exam"],
+                ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
+                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
+                ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
             ],
             "periods": [
                 {start: Time("8:30"), end: Time("10:55"), label: "Exam 1"},
