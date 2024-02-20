@@ -3,6 +3,7 @@
     import {onMount} from "svelte";
     import {fullSchedule} from "$lib/WS";
     import {scheduleBarTypes} from "$lib/Schedule";
+    import {DateTime} from "luxon";
 
     let schedule = fullSchedule
 
@@ -28,11 +29,17 @@
         // yearBar.update();
         updateCount++;
         updateOnce++;
+        let lastDate = DateTime.now();
         setInterval(() => {
             if (schedule.bars[scheduleBarTypes[0]]) document.title = `${schedule.bars[scheduleBarTypes[0]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[0]].timeLeft.toFormat(`h:mm:ss`)}`;
             else {
                 document.title = "When Does This Period End?";
             }
+            // if the date has changed, reload the page
+            if (lastDate.toFormat("d") !== DateTime.now().toFormat("d")) {
+                location.reload();
+            }
+            lastDate = DateTime.now();
         }, 1000)
         setInterval(() => {
             // yearBar.update();
