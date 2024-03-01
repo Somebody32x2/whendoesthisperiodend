@@ -1,21 +1,16 @@
 # When Does This Period End?
 ![Lines of Code](https://img.shields.io/endpoint?url=https://ghloc.vercel.app/api/Somebody32x2/whendoesthisperiodend/badge?filter=!package-lock.json)
-```bash
-# to test the app
-npm run dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Automatically built to the [`compiled`](https://rawcdn.githack.com/Somebody32x2/whendoesthisperiodend/compiled/build/index.html) branch.
 
-## Building
+To run locally, clone this repo, run 
 
-To build for production: 
+`npm install`
 
-```bash
-npm run build
-```
+and run `npm run dev` to run for development
 
-You can preview the static production build with `npm run preview`.
+or run `npm run build` 
 
-GitHub Actions should precompile the app to the "compiled" branch
+and preview the build with 
+
+`npm run preview`.

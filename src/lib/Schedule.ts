@@ -89,7 +89,7 @@ export class FullSchedule {
                     if (!shallowFindScheduleOnly && break_.interval.end?.toISOTime().includes("23:59")) {
                         let tmwSchedule = findSchedule(time.plus({days: 1}));
                         if (tmwSchedule.todaySchedule.periods.length > 0) {
-                            endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
+                            endOfDay.interval = endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
                         }
                     }
                     foundSchedule = true;
@@ -257,7 +257,7 @@ export class FullSchedule {
             semester: additionalBars.semester,
             year: additionalBars.year,
         }
-        console.log({origThis: this, bars: this.bars, todaySchedule: this.todaySchedule, endOfDay: this.endOfDay, startOfDay: this.startOfDay, schLen: this.todaySchedule.periods.length})
+        // console.log({origThis: this, bars: this.bars, todaySchedule: this.todaySchedule, endOfDay: this.endOfDay, startOfDay: this.startOfDay, schLen: this.todaySchedule.periods.length})
 
         // Set up the break bar
         if (now < this.todaySchedule.periods[0]?.start) {
