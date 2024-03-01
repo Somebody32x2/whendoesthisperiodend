@@ -17,6 +17,7 @@
         updateOnce++;
         setInterval(() => {
             if (schedule.bars[scheduleBarTypes[0]]) document.title = `${schedule.bars[scheduleBarTypes[0]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[0]].timeLeft.toFormat(`h:mm:ss`)}`;
+            else if (schedule.bars[scheduleBarTypes[1]]) document.title = `${schedule.bars[scheduleBarTypes[1]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[1]].timeLeft.toFormat(`h:mm:ss`)}`;
             else {
                 document.title = "When Does This Period End?";
             }
