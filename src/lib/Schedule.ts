@@ -56,6 +56,7 @@ export class FullSchedule {
     todaySchedule: Schedule;
     startOfDay: Break;
     endOfDay: Break;
+    offset?: Duration;
 
     bars: {
         period?: ProgressBar,
@@ -72,11 +73,13 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
+        let offset = Duration.fromMillis(0);
+        let nowTime = DateTime.now().plus(offset);
         // this.normalSchedules = normalSchedules;
         // this.specialSchedules = specialSchedules;
         // this.breaks = breaks;
         // Finds the schedule and end of day for the given time, or schedule and weekend break if shallowFindScheduleOnly is true
-        function findSchedule(time: DateTime = DateTime.now(), shallowFindScheduleOnly: boolean = false): { todaySchedule: Schedule, endOfDay: Break } {
+        function findSchedule(time: DateTime = nowTime, shallowFindScheduleOnly: boolean = false): { todaySchedule: Schedule, endOfDay: Break } {
             let foundSchedule = false;
             let todaySchedule: Schedule;
             let endOfDay: Break;
@@ -107,8 +110,8 @@ export class FullSchedule {
                             endOfDay = {
                                 label: "Weekend",
                                 interval: Interval.fromDateTimes(
-                                    lastWeekday(normalWeekendConfig.startDay, DateTime.now(), normalWeekendConfig.startTime),
-                                    nextWeekday(normalWeekendConfig.endDay, DateTime.now(), normalWeekendConfig.endTime)
+                                    lastWeekday(normalWeekendConfig.startDay, nowTime, normalWeekendConfig.startTime),
+                                    nextWeekday(normalWeekendConfig.endDay, nowTime, normalWeekendConfig.endTime)
                                 ),
                                 periods: []
                             }
@@ -148,8 +151,8 @@ export class FullSchedule {
                         endOfDay = {
                             label: "Weekend",
                             interval: Interval.fromDateTimes(
-                                lastWeekday(normalWeekendConfig.startDay, DateTime.now(), normalWeekendConfig.startTime),
-                                nextWeekday(normalWeekendConfig.endDay, DateTime.now(), normalWeekendConfig.endTime)
+                                lastWeekday(normalWeekendConfig.startDay, nowTime, normalWeekendConfig.startTime),
+                                nextWeekday(normalWeekendConfig.endDay, nowTime, normalWeekendConfig.endTime)
                             ),
                             periods: []
                         }
@@ -177,8 +180,8 @@ export class FullSchedule {
                 endOfDay = {
                     label: "Weekend",
                     interval: Interval.fromDateTimes(
-                        lastWeekday(normalWeekendConfig.startDay, DateTime.now(), normalWeekendConfig.startTime),
-                        nextWeekday(normalWeekendConfig.endDay, DateTime.now(), normalWeekendConfig.endTime)
+                        lastWeekday(normalWeekendConfig.startDay, nowTime, normalWeekendConfig.startTime),
+                        nextWeekday(normalWeekendConfig.endDay, nowTime, normalWeekendConfig.endTime)
                     ),
                     periods: []
                 }
@@ -190,13 +193,13 @@ export class FullSchedule {
         let fullSchedule = findSchedule(DateTime.now());
         this.todaySchedule = fullSchedule.todaySchedule;
         this.endOfDay = fullSchedule.endOfDay;
-        this.startOfDay = findSchedule(DateTime.now().minus({days: 1})).endOfDay;
+        this.startOfDay = findSchedule(nowTime.minus({days: 1})).endOfDay;
 
 
         let updateInSchedule = () => {
             console.error("Please call update() on the FullSchedule object, not a Schedule's bar itself (period, day, week, or break bars)");
         }
-        let now = DateTime.now();
+        let now = nowTime;
         this.bars = {
             period: this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length-1].end ?
                 { // Temorarily instantiate a bars, will be updated later to the correct data
@@ -215,8 +218,8 @@ export class FullSchedule {
             break: !(this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end) ? // If no periods, show break
                 {
                     label: "Break",
-                    start: DateTime.now(),
-                    end: DateTime.now().plus({hours: 1}),
+                    start: nowTime,
+                    end: nowTime.plus({hours: 1}),
                     color: "violet",
                     update: updateInSchedule,
                     percentDone: 0,
@@ -313,11 +316,12 @@ export class FullSchedule {
     }
 
     update() {
+        let nowTime = this.offset?.as('milliseconds') ? DateTime.now().plus(this.offset) : DateTime.now()
         for (const bar of additionalProgressBarTypes) {
             // @ts-ignore
             if (this.bars[bar]) this.bars[bar].update();
         }
-        let now = DateTime.now();
+        let now = nowTime;
         // Update bars
         if (this.bars.day) {
             this.bars.day.percentDone = getPercentDone(this.bars.day.start, this.bars.day.end, now);
