@@ -73,7 +73,8 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        this.offset = DateTime.fromISO("2024-03-13T12:00").diff(DateTime.now());
+        // this.offset = DateTime.fromISO("2024-03-13T12:00").diff(DateTime.now());
+        this.offset = Duration.fromMillis(0);
         let nowTime = DateTime.now().plus(this.offset);
         // this.normalSchedules = normalSchedules;
         // this.specialSchedules = specialSchedules;
