@@ -73,8 +73,8 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        let offset = Duration.fromMillis(0);
-        let nowTime = DateTime.now().plus(offset);
+        this.offset = DateTime.fromISO("2024-03-13T12:00").diff(DateTime.now());
+        let nowTime = DateTime.now().plus(this.offset);
         // this.normalSchedules = normalSchedules;
         // this.specialSchedules = specialSchedules;
         // this.breaks = breaks;
@@ -190,7 +190,7 @@ export class FullSchedule {
             return {todaySchedule, endOfDay}
         }
 
-        let fullSchedule = findSchedule(DateTime.now());
+        let fullSchedule = findSchedule(nowTime, false);
         this.todaySchedule = fullSchedule.todaySchedule;
         this.endOfDay = fullSchedule.endOfDay;
         this.startOfDay = findSchedule(nowTime.minus({days: 1})).endOfDay;
@@ -230,7 +230,7 @@ export class FullSchedule {
                     showEndpoints: false
                 } : undefined,
             day: this.todaySchedule.periods.length == 0 ? undefined : { // If periods, show day bar (this also means that after the break starts, the day bar will be shown for the rest of the day)
-                label: "Day",
+                label: "Today",
                 start: this.todaySchedule.periods[0].start,
                 end: this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end,
                 color: "red",
@@ -243,7 +243,7 @@ export class FullSchedule {
                 showEndpoints: true
             },
             week: this.todaySchedule.periods.length == 0 ? undefined : {
-                label: "Week",
+                label: "this Week",
                 start: this.startOfDay.interval.start!,
                 end: this.endOfDay.interval.end!,
                 color: "orange",
@@ -312,7 +312,7 @@ export class FullSchedule {
             console.log(this.bars.week?.start, this.bars.week?.end)
         }
 
-        console.log({this: this, bars: this.bars})
+        // console.log({this: this, bars: this.bars})
     }
 
     update() {
