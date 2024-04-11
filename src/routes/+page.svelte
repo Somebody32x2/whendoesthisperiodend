@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
     import {Progress} from '@svelteuidev/core';
     import {onMount} from "svelte";
     import {fullSchedule} from "$lib/WS";
     import {scheduleBarTypes} from "$lib/Schedule";
     import {DateTime} from "luxon";
+    import type {ProgressBar} from "$lib/ProgressBar";
 
     let schedule = fullSchedule
 
@@ -13,7 +14,7 @@
     let updateOnce = 0;
     let scheduleValues = new Array(scheduleBarTypes.length).fill(0);
 
-    function getTimeLeftLabel(bar) {
+    function getTimeLeftLabel(bar: ProgressBar) {
         return bar.timeLeft.toFormat(
             `${+bar.timeLeft.toFormat("d") > 0 ? `d' day${+bar.timeLeft.toFormat("d") !== 1 ? "s" : ""}, '` : ""
             }hh:mm:ss:SSS`)
@@ -21,7 +22,8 @@
     }
 
     let decimalModifier = 0;
-    function calculateDecimals(bar) { // TODO: Don't run each update
+    function calculateDecimals(bar: ProgressBar) { // TODO: Don't run each update
+        console.log(bar)
         return Math.floor(Math.log10(bar.end.toMillis() - bar.start.toMillis()) - 3) + decimalModifier;
     }
 
@@ -31,8 +33,8 @@
         updateOnce++;
         let lastDate = DateTime.now();
         setInterval(() => {
-            if (schedule.bars[scheduleBarTypes[0]]) document.title = `${schedule.bars[scheduleBarTypes[0]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[0]].timeLeft.toFormat(`h:mm:ss`)}`;
-            else if (schedule.bars[scheduleBarTypes[1]]) document.title = `${schedule.bars[scheduleBarTypes[1]].percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[1]].timeLeft.toFormat(`h:mm:ss`)}`;
+            if (schedule.bars[scheduleBarTypes[0]]) document.title = `${schedule.bars[scheduleBarTypes[0]]?.percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[0]]?.timeLeft.toFormat(`h:mm:ss`)}`;
+            else if (schedule.bars[scheduleBarTypes[1]]) document.title = `${schedule.bars[scheduleBarTypes[1]]?.percentDone.toFixed(1)}% | ${schedule.bars[scheduleBarTypes[1]]?.timeLeft.toFormat(`h:mm:ss`)}`;
             else {
                 document.title = "When Does This Period End?";
             }
@@ -47,7 +49,7 @@
             schedule.update();
             for (let i = 0; i < scheduleBarTypes.length; i++) {
                 // console.log({i, type: scheduleBarTypes[i], schedule: schedule.bars})
-                if (schedule.bars[scheduleBarTypes[i]]) scheduleValues[i] = schedule.bars[scheduleBarTypes[i]].percentDone;
+                if (schedule.bars[scheduleBarTypes[i]]) scheduleValues[i] = schedule.bars[scheduleBarTypes[i]]?.percentDone;
             }
             // value1 = yearBar.percentDone;
             updateCount++;
@@ -69,19 +71,19 @@
                 <div class="mt-10 px-2">
                     {#key updateCount}
                         <div class="text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
-                            <p class="lg:mx-2"><b>{schedule.bars[barInterval].percentDone.toFixed(calculateDecimals(schedule.bars[barInterval]))}</b>% done
-                                with {schedule.bars[barInterval].label}</p>
+                            <p class="lg:mx-2"><b>{schedule.bars[barInterval]?.percentDone.toFixed(calculateDecimals(schedule.bars[barInterval]))}</b>% done
+                                with {schedule.bars[barInterval]?.label}</p>
                             <p>
                                 (<b>{getTimeLeftLabel(schedule.bars[barInterval])}</b><!--
                                 -->&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
-                                --><b>{schedule.bars[barInterval].showEndpoints ? ` | ${schedule.bars[barInterval].start.toFormat("h:mma")} - ${schedule.bars[barInterval].end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
+                                --><b>{schedule.bars[barInterval]?.showEndpoints ? ` | ${schedule.bars[barInterval]?.start.toFormat("h:mma")} - ${schedule.bars[barInterval]?.end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
                             </p>
                         </div>
                     {/key}
                     <Progress
                             tween
                             bind:value={scheduleValues[index]}
-                            color={schedule.bars[barInterval].color}
+                            color={schedule.bars[barInterval]?.color}
                             size="xs"
                             radius="sm"
                             striped
