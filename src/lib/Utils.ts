@@ -82,3 +82,31 @@ export function toCurrentDay(time: DateTime, currentTime= DateTime.now()): DateT
 export function nthString(i: number) {
     return `${i + 1}${i + 1 === 1 ? "st" : (i + 1) % 10 === 2 ? "nd" : i + 1 === 3 ? "rd" : "th"}`;
 }
+
+export function safeFromUTCString(dateString: string): DateTime {
+    const date = DateTime.fromISO(dateString);
+    if (date.isValid) {
+        return date;
+    } else {
+        // Try to pad any lone numbers with 0 to the left ("2024-5-1T8:30" -> "2024-05-01T08:30")
+        const parts = dateString.split("T");
+        const dateParts = parts[0].split("-");
+        const timeParts = parts[1].split(":");
+        console.log({
+            year: parseInt(dateParts[0]),
+            month: parseInt(dateParts[1]),
+            day: parseInt(dateParts[2]),
+            hour: parseInt(timeParts[0]),
+            minute: timeParts[1] ? parseInt(timeParts[1]) : 0,
+            second: timeParts[2] ? parseInt(timeParts[2]) : 0,
+        })
+        return DateTime.fromObject({
+            year: parseInt(dateParts[0]),
+            month: parseInt(dateParts[1]),
+            day: parseInt(dateParts[2]),
+            hour: parseInt(timeParts[0]),
+            minute: timeParts[1] ? parseInt(timeParts[1]) : 0,
+            second: timeParts[2] ? parseInt(timeParts[2]) : 0,
+        });
+    }
+}

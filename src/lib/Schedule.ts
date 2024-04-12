@@ -1,4 +1,12 @@
-import {getPercentDone, lastWeekday, nextWeekday, type Period, ProgressBarType, toCurrentDay} from "$lib/Utils";
+import {
+    getPercentDone,
+    lastWeekday,
+    nextWeekday,
+    type Period,
+    ProgressBarType,
+    safeFromUTCString,
+    toCurrentDay
+} from "$lib/Utils";
 import {DateTime, Duration, Interval, type WeekdayNumbers} from "luxon";
 import type {ProgressBar} from "$lib/ProgressBar";
 
@@ -59,6 +67,7 @@ export class FullSchedule {
     offset?: Duration;
 
     bars: {
+        [type: string]: ProgressBar | undefined
         period?: ProgressBar,
         break?: ProgressBar,
         day?: ProgressBar,
@@ -73,14 +82,16 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        // this.offset = DateTime.fromISO("2024-03-13T12:00").diff(DateTime.now());
-        this.offset = Duration.fromMillis(0);
-        let nowTime = DateTime.now().plus(this.offset);
+        // this.offset = safeFromUTCString("2024-04-11T8:00").diff(DateTime.now());
+        // console.log(this.offset)
+        // this.offset = Duration.fromMillis(0);
+        let nowTime = DateTime.now().plus(this.offset? this.offset : 0);
         // this.normalSchedules = normalSchedules;
         // this.specialSchedules = specialSchedules;
         // this.breaks = breaks;
         // Finds the schedule and end of day for the given time, or schedule and weekend break if shallowFindScheduleOnly is true
-        function findSchedule(time: DateTime = nowTime, shallowFindScheduleOnly: boolean = false): { todaySchedule: Schedule, endOfDay: Break } {
+        function findSchedule(time: DateTime = nowTime, shallowFindScheduleOnly: boolean): { todaySchedule: Schedule, endOfDay: Break } {
+            console.log(`FINDING SCHEDULE FOR TIME ${time.toISODate()}T${time.toISOTime()}, shallowFindScheduleOnly: ${shallowFindScheduleOnly}`)
             let foundSchedule = false;
             let todaySchedule: Schedule;
             let endOfDay: Break;
@@ -91,7 +102,7 @@ export class FullSchedule {
                     endOfDay = break_;
                     // The break might end at 23:59, so extend it to the next day (if it has periods)
                     if (!shallowFindScheduleOnly && break_.interval.end?.toISOTime().includes("23:59")) {
-                        let tmwSchedule = findSchedule(time.plus({days: 1}));
+                        let tmwSchedule = findSchedule(time.plus({days: 1}), true);
                         if (tmwSchedule.todaySchedule.periods.length > 0) {
                             endOfDay.interval = endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
                         }
@@ -106,7 +117,7 @@ export class FullSchedule {
                     if (day.hasSame(time, "day")) {
                         todaySchedule = specialSchedule;
                         // end of day is the break to next day unless it has no periods in which case it is the normal weekend
-                        let tmwSchedule = findSchedule(time.plus({days: 1}));
+                        let tmwSchedule = findSchedule(time.plus({days: 1}), true);
                         if (tmwSchedule.todaySchedule.periods.length === 0) {
                             endOfDay = {
                                 label: "Weekend",
@@ -118,7 +129,7 @@ export class FullSchedule {
                             }
                         } else {
                             endOfDay = {
-                                label: "Tomorrow",
+                                label: "Until Tomorrow",
                                 interval: Interval.fromDateTimes(
                                     specialSchedule.periods[specialSchedule.periods.length].end,
                                     tmwSchedule.todaySchedule.periods[0].start
@@ -150,7 +161,7 @@ export class FullSchedule {
                     if (normalSchedule.endWithWeekend && !shallowFindScheduleOnly) {
                         // end of day is the next weekend
                         endOfDay = {
-                            label: "Weekend",
+                            label: "this Weekend",
                             interval: Interval.fromDateTimes(
                                 lastWeekday(normalWeekendConfig.startDay, nowTime, normalWeekendConfig.startTime),
                                 nextWeekday(normalWeekendConfig.endDay, nowTime, normalWeekendConfig.endTime)
@@ -167,6 +178,9 @@ export class FullSchedule {
                             ),
                             periods: []
                         }
+                        console.log("JUST CALCULATED END OF DAY !!!!!!!!!!! for time " + time.toISODate() + "T" + time.toISOTime())
+                        console.log(endOfDay)
+                        console.assert(endOfDay.interval.isValid, "End of day interval is not valid")
                     }
                     foundSchedule = true;
                     break;
@@ -194,7 +208,7 @@ export class FullSchedule {
         let fullSchedule = findSchedule(nowTime, false);
         this.todaySchedule = fullSchedule.todaySchedule;
         this.endOfDay = fullSchedule.endOfDay;
-        this.startOfDay = findSchedule(nowTime.minus({days: 1})).endOfDay;
+        this.startOfDay = findSchedule(nowTime.minus({days: 1}), false).endOfDay;
 
 
         let updateInSchedule = () => {
