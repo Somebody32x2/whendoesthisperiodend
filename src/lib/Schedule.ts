@@ -37,7 +37,7 @@ interface SpecialSchedule extends Schedule {
     label: String;
     periods: [Period, ...Period[]]; // Array must have at least one period
     daysApplicable: DateTime[];
-    specificDayLabels?: [String, ...String[]][]; // Array must have at least one period
+    specificDayLabels?: [string, ...string[]][]; // Array must have at least one period
 }
 
 interface Break extends Schedule {
@@ -113,9 +113,17 @@ export class FullSchedule {
             }
             // Check if we are in a special schedule
             if (!foundSchedule) for (const specialSchedule of specialSchedules) {
-                for (const day of specialSchedule.daysApplicable) {
+                for (const [i, day] of specialSchedule.daysApplicable.entries()) {
                     if (day.hasSame(time, "day")) {
                         todaySchedule = specialSchedule;
+                        // check if we have a specific label for this day
+                        if (specialSchedule.specificDayLabels) {
+                            for (const [j, specificDay] of specialSchedule.specificDayLabels[i].entries()) {
+                                todaySchedule.periods[j].label = specificDay;
+
+                            }
+                        }
+
                         // end of day is the break to next day unless it has no periods in which case it is the normal weekend
                         let tmwSchedule = findSchedule(time.plus({days: 1}), true);
                         if (tmwSchedule.todaySchedule.periods.length === 0) {

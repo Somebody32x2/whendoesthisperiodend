@@ -10,7 +10,8 @@ export let fullSchedule = new FullSchedule(
         {
             label: "Weekday",
             days: [1, 2, 3, 4],
-            periods: [{"start": Time("08:30"), end: Time("09:19"), "label": "1st Period"}, // Add 1st period to satisfy the "at least one period" requirement
+            periods: [
+                {start: Time("08:30"), end: Time("09:19"), label: "1st Period"},
                 {start: Time("09:23"), end: Time("10:12"), label: "2nd Period"},
                 {start: Time("10:16"), end: Time("11:05"), label: "3rd Period"},
                 {start: Time("11:09"), end: Time("12:02"), label: "4th Period"},
@@ -56,8 +57,23 @@ export let fullSchedule = new FullSchedule(
                 {start: Time("10:55"), end: Time("11:55"), label: "Power Hour"},
                 {start: Time("11:55"), end: Time("14:15"), label: "Exam 2"},
             ]
+        },
+        {
+            "label": "One Exam",
+            "daysApplicable": [
+                DateTime.fromISO("2024-05-21")
+            ],
+            "periods": [
+                {start: Time("08:30"), end: Time("09:05"), label: "1st Period"},
+                {start: Time("09:09"), end: Time("09:41"), label: "2nd Period"},
+                {start: Time("09:45"), end: Time("10:17"), label: "3rd Period"},
+                {start: Time("10:21"), end: Time("10:53"), label: "4th Period"},
+                {start: Time("10:57"), end: Time("11:29"), label: "5th Period"},
+                {start: Time("11:29"), end: Time("12:31"), label: "Power Hour"},
+                {start: Time("12:31"), end: Time("13:06"), label: "6th Period"},
+                {start: Time("13:10"), end: Time("15:30"), label: "7th Period"}
+            ]
         }
-        // TODO: Add 1 exam schedule (for 2024-05-21 [p7 exam])
     ],
     // Breaks
     [
