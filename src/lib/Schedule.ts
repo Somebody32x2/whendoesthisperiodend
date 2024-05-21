@@ -342,7 +342,7 @@ export class FullSchedule {
             console.log(this.bars.week?.start, this.bars.week?.end)
         }
 
-        // console.log({this: this, bars: this.bars})
+        console.log({this: this, bars: this.bars})
     }
 
     update() {
@@ -414,7 +414,7 @@ export class FullSchedule {
                 console.log("Between Periods!")
             }
             // Check if we should just advance to the next period
-            if (this.todaySchedule.periods[currentPeriod + 1]!.start < now) {
+            if (this.todaySchedule.periods[currentPeriod + 1] && this.todaySchedule.periods[currentPeriod + 1]!.start < now) {
                 this.bars.period.label = this.todaySchedule.periods[currentPeriod + 1]!.label;
                 this.bars.period.start = this.todaySchedule.periods[currentPeriod + 1]!.start;
                 this.bars.period.end = this.todaySchedule.periods[currentPeriod + 1]!.end;
