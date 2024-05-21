@@ -71,7 +71,7 @@ export let fullSchedule = new FullSchedule(
                 {start: Time("10:57"), end: Time("11:29"), label: "5th Period"},
                 {start: Time("11:29"), end: Time("12:31"), label: "Power Hour"},
                 {start: Time("12:31"), end: Time("13:06"), label: "6th Period"},
-                {start: Time("13:10"), end: Time("15:30"), label: "7th Period"}
+                {start: Time("13:10"), end: Time("15:30"), label: "7th Period Exam"}
             ]
         }
     ],
