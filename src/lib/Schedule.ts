@@ -85,12 +85,15 @@ export class FullSchedule {
         // this.offset = safeFromUTCString("2024-04-11T8:00").diff(DateTime.now());
         // console.log(this.offset)
         // this.offset = Duration.fromMillis(0);
-        let nowTime = DateTime.now().plus(this.offset? this.offset : 0);
+        let nowTime = DateTime.now().plus(this.offset ? this.offset : 0);
         // this.normalSchedules = normalSchedules;
         // this.specialSchedules = specialSchedules;
         // this.breaks = breaks;
         // Finds the schedule and end of day for the given time, or schedule and weekend break if shallowFindScheduleOnly is true
-        function findSchedule(time: DateTime = nowTime, shallowFindScheduleOnly: boolean): { todaySchedule: Schedule, endOfDay: Break } {
+        function findSchedule(time: DateTime = nowTime, shallowFindScheduleOnly: boolean): {
+            todaySchedule: Schedule,
+            endOfDay: Break
+        } {
             console.log(`FINDING SCHEDULE FOR TIME ${time.toISODate()}T${time.toISOTime()}, shallowFindScheduleOnly: ${shallowFindScheduleOnly}`)
             let foundSchedule = false;
             let todaySchedule: Schedule;
@@ -125,25 +128,29 @@ export class FullSchedule {
                         }
 
                         // end of day is the break to next day unless it has no periods in which case it is the normal weekend
-                        let tmwSchedule = findSchedule(time.plus({days: 1}), true);
-                        if (tmwSchedule.todaySchedule.periods.length === 0) {
-                            endOfDay = {
-                                label: "Weekend",
-                                interval: Interval.fromDateTimes(
-                                    lastWeekday(normalWeekendConfig.startDay, nowTime, normalWeekendConfig.startTime),
-                                    nextWeekday(normalWeekendConfig.endDay, nowTime, normalWeekendConfig.endTime)
-                                ),
-                                periods: []
+                        if (!shallowFindScheduleOnly) {
+                            let tmwSchedule = findSchedule(time.plus({days: 1}), true);
+                            if (tmwSchedule.todaySchedule.periods.length === 0) {
+                                endOfDay = {
+                                    label: "Weekend",
+                                    interval: Interval.fromDateTimes(
+                                        lastWeekday(normalWeekendConfig.startDay, nowTime, normalWeekendConfig.startTime),
+                                        nextWeekday(normalWeekendConfig.endDay, nowTime, normalWeekendConfig.endTime)
+                                    ),
+                                    periods: []
+                                }
+                            } else {
+                                console.log(tmwSchedule.todaySchedule.periods[0].start, time.plus({days: 1}).toMillis() - toCurrentDay(specialSchedule.periods[specialSchedule.periods.length - 1].end, time).toMillis())
+                                endOfDay = {
+                                    label: "Until Tomorrow",
+                                    interval: Interval.fromDateTimes(
+                                        toCurrentDay(specialSchedule.periods[specialSchedule.periods.length-1].end, time),
+                                        toCurrentDay(tmwSchedule.todaySchedule.periods[0].start, time.plus({days: 1}))
+                                    ),
+                                    periods: []
+                                };
+                                console.log(endOfDay)
                             }
-                        } else {
-                            endOfDay = {
-                                label: "Until Tomorrow",
-                                interval: Interval.fromDateTimes(
-                                    specialSchedule.periods[specialSchedule.periods.length].end,
-                                    tmwSchedule.todaySchedule.periods[0].start
-                                ),
-                                periods: []
-                            };
                         }
                         foundSchedule = true;
                         break
@@ -224,7 +231,7 @@ export class FullSchedule {
         }
         let now = nowTime;
         this.bars = {
-            period: this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length-1].end ?
+            period: this.todaySchedule.periods.length > 0 && now > this.todaySchedule.periods[0].start && now < this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end ?
                 { // Temorarily instantiate a bars, will be updated later to the correct data
                     label: "Period",
                     start: this.todaySchedule.periods[0].start,
@@ -383,7 +390,7 @@ export class FullSchedule {
         if (this.bars.period) {
             // Check if we have passed end of last period
             let currentPeriod = -1; // The last period for which now > start
-            for (let i = this.todaySchedule.periods.length-1; i >= 0; i--) {
+            for (let i = this.todaySchedule.periods.length - 1; i >= 0; i--) {
                 if (now > this.todaySchedule.periods[i]?.start) {
                     currentPeriod = i;
                     break;
