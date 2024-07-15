@@ -76,7 +76,7 @@ export class FullSchedule {
         interim?: ProgressBar,
         quarter?: ProgressBar,
         semester?: ProgressBar,
-        year: ProgressBar,
+        year?: ProgressBar,
     }
 
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
@@ -348,8 +348,16 @@ export class FullSchedule {
     update() {
         let nowTime = this.offset?.as('milliseconds') ? DateTime.now().plus(this.offset) : DateTime.now()
         for (const bar of additionalProgressBarTypes) {
-            // @ts-ignore
-            if (this.bars[bar]) this.bars[bar].update();
+            try {
+                // @ts-ignore
+                if (this.bars[bar]) this.bars[bar].update();
+            }
+            catch (e) {
+                console.error(`Error updating ${bar} bar: ${e}, ${e.stack}`)
+                // undefine the bar
+                this.bars[bar] = undefined;
+            }
+
         }
         let now = nowTime;
         // Update bars
