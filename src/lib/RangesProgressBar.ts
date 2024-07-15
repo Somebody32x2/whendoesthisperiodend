@@ -49,14 +49,16 @@ export class RangesProgressBar implements ProgressBar {
     update = () => {
         const now = DateTime.now().toMillis();
         let percentDone = -1;
-        // Before first period, show time until first period from last period yesterday
+        // Before first range, show negative percent done and time left of the first range
         if (now < this.ranges[0][0].toMillis()) {
-            percentDone = getPercentDone(this.ranges[this.ranges.length-1][1].minus({days: 1}), this.ranges[0][0]);
-            this.label = `Time Until ${this.rangeLabels[0]}`;
-            this.start = this.ranges[this.ranges.length-1][1].minus({days: 1});
-            this.end = this.ranges[0][0];
+            percentDone = -1;
+            this.label = this.rangeLabels[0]
+            this.start = this.ranges[0][0];
+            this.end = this.ranges[0][1]
+            // this.end = DateTime.now();
             this.timeLeft = this.ranges[0][0].diffNow();
         }
+
         for (let i = 0; i < this.ranges.length; i++) {
             const start = this.ranges[i][0].toMillis();
             const end = this.ranges[i][1].toMillis();
@@ -68,7 +70,7 @@ export class RangesProgressBar implements ProgressBar {
                 this.timeLeft = this.ranges[i][1].diffNow();
                 break;
             } // Between periods, show time until next period
-            else if (now > end && now < this.ranges[i+1][0].toMillis()) {
+            else if (now > end && i < this.ranges.length - 1 && now < this.ranges[i+1][0].toMillis()) {
                 percentDone = getPercentDone(this.ranges[i][1], this.ranges[i+1][0]);
                 this.label = `Time Until ${this.rangeLabels[i+1]}`;
                 this.start = this.ranges[i][1];
@@ -77,13 +79,14 @@ export class RangesProgressBar implements ProgressBar {
                 break;
             }
         }
-        // After last period, show time until first period tomorrow
-        if (now > this.ranges[this.ranges.length-1][1].toMillis()) {
-            percentDone = getPercentDone(this.ranges[this.ranges.length-1][1], this.ranges[0][0].plus({days: 1}));
-            this.label = `Time Until ${this.rangeLabels[0]}`;
-            this.start = this.ranges[this.ranges.length-1][1];
-            this.end = this.ranges[0][0].plus({days: 1});
-            this.timeLeft = this.ranges[0][0].plus({days: 1}).diffNow();
+        // After last period show over 100% done and time left of the last period
+        let lastRange = this.ranges[this.ranges.length - 1];
+        if (now > lastRange[1].toMillis() && percentDone === -1) {
+            this.label = this.rangeLabels[this.rangeLabels.length - 1];
+            this.start = lastRange[0];
+            this.end = lastRange[1];
+            this.timeLeft = lastRange[1].diffNow();
+            percentDone = getPercentDone(lastRange[0], lastRange[1], DateTime.now());
         }
         this.percentDone = percentDone;
     }
