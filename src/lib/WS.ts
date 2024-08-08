@@ -78,29 +78,59 @@ export let fullSchedule = new FullSchedule(
     // Breaks
     [
         {
+            label: "Labor Day Weekend",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-08-30T14:15"), DateTime.fromISO("2023-09-02T23:59"))
+        },
+        {
+            label: "Student Holiday",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-10-11T14:15"), DateTime.fromISO("2024-10-14T23:59"))
+        },
+        {
+            label: "Vetrans' Day Weekend",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-11-08T14:15"), DateTime.fromISO("2024-11-11T23:59"))
+        },
+        {
+            label: "Thanksgiving Break",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-11-22T14:15"), DateTime.fromISO("2024-12-01T23:59"))
+        },
+        {
+            label: "Winter Break",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-12-20T14:15"), DateTime.fromISO("2025-01-05T23:59"))
+        },
+        {
+            label: "🖤 Martin Luther King Jr. Day Weekend",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-01-17T14:15"), DateTime.fromISO("2025-01-20T23:59"))
+        },
+        {
             label: "President's Day Weekend",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-02-16T14:15"), DateTime.fromISO("2024-02-19T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-02-14T14:15"), DateTime.fromISO("2025-02-17T23:59"))
         },
         {
             label: "Long Weekend - Student Holiday",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-03-14T15:30"), DateTime.fromISO("2024-03-17T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-03-14T15:30"), DateTime.fromISO("2024-03-16T23:59"))
         },
         {
             label: "Spring Break",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-03-22T14:15"), DateTime.fromISO("2024-03-31T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-03-14T14:15"), DateTime.fromISO("2024-03-23T23:59"))
         },
-        // {
-        //     label: "Memorial Day Weekend",
-        //     periods: [],
-        //     interval: Interval.fromDateTimes(DateTime.fromISO("2024-05-24T14:15"), DateTime.fromISO("2024-05-27T23:59"))
-        // }
+        {
+            label: "Memorial Day Weekend",
+            periods: [],
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-05-23T14:15"), DateTime.fromISO("2025-05-26T23:59"))
+        },
         {
             label: "Summer Break",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-05-24T14:15"), DateTime.fromISO("2024-08-10T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2024-05-24T14:15"), DateTime.fromISO("2024-08-12T23:59"))
         }
     ],
     {

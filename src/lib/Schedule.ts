@@ -105,7 +105,8 @@ export class FullSchedule {
                     endOfDay = break_;
                     // The break might end at 23:59, so extend it to the next day (if it has periods)
                     if (!shallowFindScheduleOnly && break_.interval.end?.toISOTime().includes("23:59")) {
-                        let tmwSchedule = findSchedule(time.plus({days: 1}), true);
+                        let tmwSchedule = findSchedule(break_.interval.end.plus({"hours": 1}).plus({days: 1}), true);
+                        console.log(tmwSchedule.todaySchedule.periods.length)
                         if (tmwSchedule.todaySchedule.periods.length > 0) {
                             endOfDay.interval = endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
                         }
