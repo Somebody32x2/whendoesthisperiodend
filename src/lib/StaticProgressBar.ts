@@ -33,9 +33,9 @@ export class StaticProgressBar implements ProgressBar {
         this.timeLeft = Duration.fromMillis(0);
     }
 
-    update = () => {
-        this.percentDone = getPercentDone(this.start, this.end);
-        this.timeLeft = this.end.diffNow();
+    update = (offset: Duration | undefined) => {
+        this.percentDone = getPercentDone(this.start, this.end, DateTime.now().plus(offset ? offset : 0));
+        this.timeLeft = this.end.diff(DateTime.now().plus(offset ? offset : 0));
         // console.log({percentDone: this.percentDone, start: this.start, end: this.end});
     }
 

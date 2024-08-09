@@ -47,44 +47,45 @@ export class PeriodsProgressBar implements ProgressBar {
 
     }
 
-    update = () => {
-        const now = DateTime.now().toMillis();
+    update = (offset: Duration | undefined) => {
+        const now = DateTime.now().plus(offset ? offset : 0).toMillis();
+        const nowTime = DateTime.now().plus(offset ? offset : 0);
         let percentDone = -1;
         // Before first period, show time until first period from last period yesterday
         if (now < this.pStarts[0].toMillis()) {
-            percentDone = getPercentDone(this.pEnds[this.pEnds.length-1].minus({days: 1}), this.pStarts[0]);
+            percentDone = getPercentDone(this.pEnds[this.pEnds.length-1].minus({days: 1}), this.pStarts[0], nowTime);
             this.label = `Time Until ${this.pLabels[0]}`;
             this.start = this.pEnds[this.pEnds.length-1].minus({days: 1});
             this.end = this.pStarts[0];
-            this.timeLeft = this.pStarts[0].diffNow();
+            this.timeLeft = this.pStarts[0].diff(nowTime);
         }
         for (let i = 0; i < this.pStarts.length; i++) {
             const start = this.pStarts[i].toMillis();
             const end = this.pEnds[i].toMillis();
             if (now > start && now < end) {
-                percentDone = getPercentDone(this.pStarts[i], this.pEnds[i]);
+                percentDone = getPercentDone(this.pStarts[i], this.pEnds[i], nowTime);
                 this.label = `${this.pLabels[i]}`;
                 this.start = this.pStarts[i];
                 this.end = this.pEnds[i];
-                this.timeLeft = this.pEnds[i].diffNow();
+                this.timeLeft = this.pEnds[i].diff(nowTime);
                 break;
             } // Between periods, show time until next period
             else if (now > end && now < this.pStarts[i+1].toMillis()) {
-                percentDone = getPercentDone(this.pEnds[i], this.pStarts[i+1]);
+                percentDone = getPercentDone(this.pEnds[i], this.pStarts[i+1], nowTime);
                 this.label = `Time Until ${this.pLabels[i+1]}`;
                 this.start = this.pEnds[i];
                 this.end = this.pStarts[i+1];
-                this.timeLeft = this.pStarts[i+1].diffNow();
+                this.timeLeft = this.pStarts[i+1].diff(nowTime);
                 break;
             }
         }
         // After last period, show time until first period tomorrow
         if (now > this.pEnds[this.pEnds.length-1].toMillis()) {
-            percentDone = getPercentDone(this.pEnds[this.pEnds.length-1], this.pStarts[0].plus({days: 1}));
+            percentDone = getPercentDone(this.pEnds[this.pEnds.length-1], this.pStarts[0].plus({days: 1}), nowTime);
             this.label = `Time Until ${this.pLabels[0]}`;
             this.start = this.pEnds[this.pEnds.length-1];
             this.end = this.pStarts[0].plus({days: 1});
-            this.timeLeft = this.pStarts[0].plus({days: 1}).diffNow();
+            this.timeLeft = this.pStarts[0].plus({days: 1}).diff(nowTime);
         }
         this.percentDone = percentDone;
     }

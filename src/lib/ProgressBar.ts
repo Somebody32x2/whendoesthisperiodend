@@ -2,7 +2,7 @@ import {ProgressBarType} from "./Utils";
 import {type DateTime, Duration} from "luxon";
 import type {SvelteUIColor} from "@svelteuidev/core";
 interface UpdateFunction {
-    (): void;
+    (offset: Duration | undefined): void;
 }
 export interface ProgressBar {
     type: ProgressBarType;

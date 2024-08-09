@@ -82,7 +82,7 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        // this.offset = safeFromUTCString("2024-04-11T8:00").diff(DateTime.now());
+        // this.offset = safeFromUTCString("2024-08-12T8:29:10").diff(DateTime.now()); // TODO: RE-COMMENT
         // console.log(this.offset)
         // this.offset = Duration.fromMillis(0);
         let nowTime = DateTime.now().plus(this.offset ? this.offset : 0);
@@ -105,7 +105,7 @@ export class FullSchedule {
                     endOfDay = break_;
                     // The break might end at 23:59, so extend it to the next day (if it has periods)
                     if (!shallowFindScheduleOnly && break_.interval.end?.toISOTime().includes("23:59")) {
-                        let tmwSchedule = findSchedule(break_.interval.end.plus({"hours": 1}).plus({days: 1}), true);
+                        let tmwSchedule = findSchedule(break_.interval.end.plus({"hours": 1}), true);
                         console.log(tmwSchedule.todaySchedule.periods.length)
                         if (tmwSchedule.todaySchedule.periods.length > 0) {
                             endOfDay.interval = endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
@@ -351,9 +351,10 @@ export class FullSchedule {
         for (const bar of additionalProgressBarTypes) {
             try {
                 // @ts-ignore
-                if (this.bars[bar]) this.bars[bar].update();
+                if (this.bars[bar]) this.bars[bar].update(this.offset);
             }
             catch (e) {
+                // @ts-ignore
                 console.error(`Error updating ${bar} bar: ${e}, ${e.stack}`)
                 // undefine the bar
                 this.bars[bar] = undefined;
@@ -375,7 +376,7 @@ export class FullSchedule {
             this.bars.break.timeLeft = this.bars.break.end.diff(now);
             // Check if we have passed start of 1st period and this ends the break
             if (this.todaySchedule.periods[0]?.start < now && this.startOfDay.interval.start == this.bars.break.start) {
-                this.bars.break = undefined;
+                if (now > this.bars.break.end) this.bars.break = undefined;
                 // Initialize to first period
                 this.bars.period = {
                     label: this.todaySchedule.periods[0].label,
