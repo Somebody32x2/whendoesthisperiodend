@@ -29,9 +29,9 @@ export class DailyProgressBar implements ProgressBar {
         this.timeLeft = Duration.fromMillis(0);
     }
 
-    update = () => {
-        this.percentDone = getPercentDone(toCurrentDay(this.start), toCurrentDay(this.end));
-        this.timeLeft = toCurrentDay(this.end).diffNow();
+    update = (offset: Duration | undefined) => {
+        this.percentDone = getPercentDone(toCurrentDay(this.start), toCurrentDay(this.end), DateTime.now().plus(offset ? offset : 0));
+        this.timeLeft = toCurrentDay(this.end).diff(DateTime.now().plus(offset ? offset : 0));
     }
 
 

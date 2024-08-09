@@ -28,6 +28,8 @@
         return Math.floor(Math.log10(bar.end.toMillis() - bar.start.toMillis()) - 3) + decimalModifier;
     }
 
+    let lastBars: string[] = [];
+    let fullUpdateRequest = 0;
     onMount(() => {
         // yearBar.update();
         updateCount++;
@@ -52,36 +54,40 @@
                 // console.log({i, type: scheduleBarTypes[i], schedule: schedule.bars})
                 if (schedule.bars[scheduleBarTypes[i]]) scheduleValues[i] = schedule.bars[scheduleBarTypes[i]]?.percentDone;
             }
-            barCount = Object.keys(schedule.bars).filter(bar => schedule.bars[bar] !== undefined).length
+            let bars = Object.keys(schedule.bars).filter(bar => schedule.bars[bar] !== undefined)
+            if (bars.some(bar => !lastBars.includes(bar)) || bars.length !== lastBars.length) {
+                console.log({bars, lastBars, fullUpdateRequest})
+                lastBars = bars;
+                fullUpdateRequest++;
+            }
             // value1 = yearBar.percentDone;
             updateCount++;
             // console.log(yearBar.percentDone.toFixed(7));
         }, 23);
     });
-    // count of bars that are defined
-    let barCount = Object.keys(schedule.bars).filter(bar => schedule.bars[bar] !== undefined).length;
+
     // let value1 = 0; // It seems we can only bind to a variable, not a property, so we need to use a variable
     // $: value1 = yearBar.percentDone;
 </script>
 <div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white relative">
     <a class="underline hidden lg:block absolute top-0 right-1" href="/whendoesthisperiodend_old">Back to Old
         Version</a>
-    <h1 class="text-5xl font-black mx-10">When Does This Period End?</h1>
+    <h1 class="text-3xl md:text-5xl font-black mx-10 max-lg:mt-8">When Does This Period End?</h1>
     <!--    <p class="text-3xl m-2">⚠️️️WIP⚠️</p>-->
     <div class="w-full md:w-[75%] text-center my-10">
-        {#key barCount}
+        {#key fullUpdateRequest}
             {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
                 <!--                <p>{barInterval}</p>-->
                 {#if schedule.bars[barInterval] !== undefined}
 
                     <div class="mt-10 px-2">
                         {#key updateCount}
-                            <div class="text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
+                            <div class="text-md sm:text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
                                 <p class="lg:mx-2">
-                                    <b>{schedule.bars[barInterval]?.percentDone.toFixed(calculateDecimals(schedule.bars[barInterval]))}</b>%
+                                    <b class="text-lg sm:text-xl lg:text-2xl">{schedule.bars[barInterval]?.percentDone.toFixed(calculateDecimals(schedule.bars[barInterval]))}</b>%
                                     done
                                     with {schedule.bars[barInterval]?.label}</p>
-                                <p>
+                                <p class="text-lg sm:text-xl lg:text-2xl">
                                     (<b>{getTimeLeftLabel(schedule.bars[barInterval])}</b><!--
                                 -->&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
                                 --><b>{schedule.bars[barInterval]?.showEndpoints ? ` | ${schedule.bars[barInterval]?.start.toFormat("h:mma")} - ${schedule.bars[barInterval]?.end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)

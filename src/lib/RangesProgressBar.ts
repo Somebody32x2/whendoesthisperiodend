@@ -46,36 +46,37 @@ export class RangesProgressBar implements ProgressBar {
 
     }
 
-    update = () => {
-        const now = DateTime.now().toMillis();
+    update = (offset: Duration | undefined) => {
+        const now = DateTime.now().plus(offset ? offset : 0).toMillis();
+        const nowTime = DateTime.now().plus(offset ? offset : 0);
         let percentDone = -1;
         // Before first range, show negative percent done and time left of the first range
         if (now < this.ranges[0][0].toMillis()) {
-            percentDone = -1;
+            percentDone = getPercentDone(this.ranges[0][0], this.ranges[0][1], nowTime);
             this.label = this.rangeLabels[0]
             this.start = this.ranges[0][0];
             this.end = this.ranges[0][1]
             // this.end = DateTime.now();
-            this.timeLeft = this.ranges[0][0].diffNow();
+            this.timeLeft = this.ranges[0][0].diff(nowTime);
         }
 
         for (let i = 0; i < this.ranges.length; i++) {
             const start = this.ranges[i][0].toMillis();
             const end = this.ranges[i][1].toMillis();
             if (now > start && now < end) {
-                percentDone = getPercentDone(this.ranges[i][0], this.ranges[i][1]);
+                percentDone = getPercentDone(this.ranges[i][0], this.ranges[i][1], nowTime);
                 this.label = `${this.rangeLabels[i]}`;
                 this.start = this.ranges[i][0];
                 this.end = this.ranges[i][1];
-                this.timeLeft = this.ranges[i][1].diffNow();
+                this.timeLeft = this.ranges[i][1].diff(nowTime);
                 break;
             } // Between periods, show time until next period
             else if (now > end && i < this.ranges.length - 1 && now < this.ranges[i+1][0].toMillis()) {
-                percentDone = getPercentDone(this.ranges[i][1], this.ranges[i+1][0]);
+                percentDone = getPercentDone(this.ranges[i][1], this.ranges[i+1][0], nowTime);
                 this.label = `Time Until ${this.rangeLabels[i+1]}`;
                 this.start = this.ranges[i][1];
                 this.end = this.ranges[i+1][0];
-                this.timeLeft = this.ranges[i+1][0].diffNow();
+                this.timeLeft = this.ranges[i+1][0].diff(nowTime);
                 break;
             }
         }
@@ -85,8 +86,8 @@ export class RangesProgressBar implements ProgressBar {
             this.label = this.rangeLabels[this.rangeLabels.length - 1];
             this.start = lastRange[0];
             this.end = lastRange[1];
-            this.timeLeft = lastRange[1].diffNow();
-            percentDone = getPercentDone(lastRange[0], lastRange[1], DateTime.now());
+            this.timeLeft = lastRange[1].diff(nowTime);
+            percentDone = getPercentDone(lastRange[0], lastRange[1], nowTime);
         }
         this.percentDone = percentDone;
     }
