@@ -72,6 +72,27 @@ export let fullSchedule = new FullSchedule(
                 {start: Time("12:31"), end: Time("13:06"), label: "6th Period"},
                 {start: Time("13:10"), end: Time("15:30"), label: "7th Period Exam"}
             ]
+        },
+        {
+            "label": "Long Friday",
+            "daysApplicable": [
+                DateTime.fromISO("2024-11-8"),
+                DateTime.fromISO("2024-11-15"),
+                DateTime.fromISO("2024-11-22"),
+                DateTime.fromISO("2024-11-29"),
+                DateTime.fromISO("2024-12-06"),
+            ],
+            "periods": [
+                {start: Time("08:30"), end: Time("09:19"), label: "1st Period"},
+                {start: Time("09:23"), end: Time("10:12"), label: "2nd Period"},
+                {start: Time("10:16"), end: Time("11:05"), label: "3rd Period"},
+                {start: Time("11:09"), end: Time("12:02"), label: "4th Period"},
+                {start: Time("12:02"), end: Time("12:51"), label: "HR/Power Hour"},
+                {start: Time("12:55"), end: Time("13:44"), label: "5th Period"},
+                {start: Time("13:48"), end: Time("14:37"), label: "6th Period"},
+                {start: Time("14:41"), end: Time("15:30"), label: "7th Period"}
+            ]
+
         }
     ],
     // Breaks
