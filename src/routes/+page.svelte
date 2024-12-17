@@ -76,28 +76,30 @@
     <!--    <p class="text-3xl m-2">⚠️️️WIP⚠️</p>-->
     <div class="w-full md:w-[75%] text-center my-10">
         {#key fullUpdateRequest}
-            {#each Object.keys(schedule.bars) as barInterval, index (barInterval)}
+            {#each Object.entries(schedule.bars) as [barInterval, bar], index (barInterval)}
                 <!--                <p>{barInterval}</p>-->
-                {#if schedule.bars[barInterval] !== undefined}
-
+                {#if !!bar}
                     <div class="mt-10 px-2">
                         {#key updateCount}
                             <div class="text-md sm:text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
                                 <p class="lg:mx-2">
-                                    <b class="text-lg sm:text-xl lg:text-2xl">{schedule.bars[barInterval]?.percentDone.toFixed(calculateDecimals(schedule.bars[barInterval]))}</b>%
+                                    <b class="text-lg sm:text-xl lg:text-2xl">{bar.percentDone.toFixed(calculateDecimals(bar))}</b>%
                                     done
-                                    with {schedule.bars[barInterval]?.label}</p>
+                                    with {bar.label}</p>
+                                <!--{#if barInterval === scheduleBarTypes[0] && bar.label !== ""}-->
+                                <!--    <p></p>-->
+                                <!--{/if}-->
                                 <p class="text-lg sm:text-xl lg:text-2xl">
-                                    (<b>{getTimeLeftLabel(schedule.bars[barInterval])}</b><!--
-                                -->&nbsp;{schedule.bars[barInterval].timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
-                                --><b>{schedule.bars[barInterval]?.showEndpoints ? ` | ${schedule.bars[barInterval]?.start.toFormat("h:mma")} - ${schedule.bars[barInterval]?.end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
+                                    (<b>{getTimeLeftLabel(bar)}</b><!--
+                                -->&nbsp;{bar.timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
+                                --><b>{bar.showEndpoints ? ` | ${bar.start.toFormat("h:mma")} - ${bar.end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
                                 </p>
                             </div>
                         {/key}
                         <Progress
                                 tween
                                 bind:value={scheduleValues[index]}
-                                color={schedule.bars[barInterval]?.color}
+                                color={bar.color}
                                 size="xs"
                                 radius="sm"
                                 striped
