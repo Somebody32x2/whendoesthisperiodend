@@ -97,6 +97,24 @@ export let fullSchedule = new FullSchedule(
                 {start: Time("14:41"), end: Time("15:30"), label: "7th Period"}
             ]
 
+        },
+        {
+            label: "Mental Health/Resiliency Day",
+            daysApplicable: [
+                DateTime.fromISO("2024-12-11")
+            ],
+            periods: [
+                {start: Time("08:30"), end: Time("09:13"), label: "1st Period"},
+                {start: Time("09:17"), end: Time("10:00"), label: "2nd Period"},
+                {start: Time("10:04"), end: Time("10:47"), label: "3rd Period"},
+                {start: Time("10:51"), end: Time("11:38"), label: "4th Period"},
+                {start: Time("11:42"), end: Time("12:23"), label: "Homeroom/Lunch"},
+                {start: Time("12:28"), end: Time("13:09"), label: "Lunch/Homeroom"},
+                {start: Time("13:13"), end: Time("13:56"), label: "5th Period"},
+                {start: Time("14:00"), end: Time("14:43"), label: "6th Period"},
+                {start: Time("14:47"), end: Time("15:30"), label: "7th Period"}
+
+                ]
         }
     ],
     // Breaks
@@ -167,14 +185,14 @@ export let fullSchedule = new FullSchedule(
         quarter: new RangesProgressBar("quarters", [
             // [DateTime.fromISO("2024-03-14T08:30"), DateTime.fromISO("2024-05-24T14:15")],
             [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2024-10-11T14:15")],
-            [DateTime.fromISO("2024-10-15T08:30"), DateTime.fromISO("2025-01-07T14:15")],
-            [DateTime.fromISO("2025-01-08T08:30"), DateTime.fromISO("2025-03-13T14:15")],
+            [DateTime.fromISO("2024-10-15T08:30"), DateTime.fromISO("2025-01-09T14:15")],
+            [DateTime.fromISO("2025-01-10T08:30"), DateTime.fromISO("2025-03-13T14:15")],
             [DateTime.fromISO("2025-03-24T08:30"), DateTime.fromISO("2025-05-28T14:15")],
         ], ["1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter"], true, "yellow", false),
         semester: new RangesProgressBar("semesters", [
             // [DateTime.fromISO("2024-01-08T15:30"), DateTime.fromISO("2024-05-24T14:15")],
-            [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-07T14:15")],
-            [DateTime.fromISO("2025-01-08T08:30"), DateTime.fromISO("2025-05-28T14:15")],
+            [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-09T14:15")],
+            [DateTime.fromISO("2025-01-9T14:15"), DateTime.fromISO("2025-05-28T14:15")],
         ], ["1st Semester", "2nd Semester"], true, "lime", false),
         // year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2023-08-10T08:30"), DateTime.fromISO("2024-05-24T14:15"), true, "green", false),
         year: new RangesProgressBar("year", [
