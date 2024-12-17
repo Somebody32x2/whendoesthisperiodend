@@ -4,8 +4,7 @@ import {
     nextWeekday,
     type Period,
     ProgressBarType,
-    safeFromUTCString,
-    toCurrentDay
+    safeFromUTCString, toCurrentDay
 } from "$lib/Utils";
 import {DateTime, Duration, Interval, type WeekdayNumbers} from "luxon";
 import type {ProgressBar} from "$lib/ProgressBar";
@@ -82,7 +81,7 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        // this.offset = safeFromUTCString("2024-08-12T8:29:10").diff(DateTime.now()); // TODO: RE-COMMENT
+        // this.offset = safeFromUTCString("2024-12-17T8:30:10").diff(DateTime.now()); // TODO: RE-COMMENT
         // console.log(this.offset)
         // this.offset = Duration.fromMillis(0);
         let nowTime = DateTime.now().plus(this.offset ? this.offset : 0);
@@ -119,9 +118,22 @@ export class FullSchedule {
             if (!foundSchedule) for (const specialSchedule of specialSchedules) {
                 for (const [i, day] of specialSchedule.daysApplicable.entries()) {
                     if (day.hasSame(time, "day")) {
+                        console.log("FOUND SPECIAL SCHEDULE")
                         todaySchedule = specialSchedule;
+
+                        console.log({todaySchedule: todaySchedule})
+
+                        // copy over only times from the special schedule
+                        todaySchedule.periods = todaySchedule.periods.map(period => {
+                            return {
+                                start: toCurrentDay(period.start, time),
+                                end: toCurrentDay(period.end, time),
+                                label: period.label,
+                            }
+                        });
+
                         // check if we have a specific label for this day
-                        if (specialSchedule.specificDayLabels) {
+                        if (specialSchedule.specificDayLabels && !shallowFindScheduleOnly) {
                             for (const [j, specificDay] of specialSchedule.specificDayLabels[i].entries()) {
                                 todaySchedule.periods[j].label = specificDay;
 
@@ -145,7 +157,7 @@ export class FullSchedule {
                                 endOfDay = {
                                     label: "Until Tomorrow",
                                     interval: Interval.fromDateTimes(
-                                        toCurrentDay(specialSchedule.periods[specialSchedule.periods.length-1].end, time),
+                                        toCurrentDay(specialSchedule.periods[specialSchedule.periods.length - 1].end, time),
                                         toCurrentDay(tmwSchedule.todaySchedule.periods[0].start, time.plus({days: 1}))
                                     ),
                                     periods: []
@@ -352,8 +364,7 @@ export class FullSchedule {
             try {
                 // @ts-ignore
                 if (this.bars[bar]) this.bars[bar].update(this.offset);
-            }
-            catch (e) {
+            } catch (e) {
                 // @ts-ignore
                 console.error(`Error updating ${bar} bar: ${e}, ${e.stack}`)
                 // undefine the bar

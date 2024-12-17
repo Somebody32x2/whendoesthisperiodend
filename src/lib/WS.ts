@@ -42,6 +42,9 @@ export let fullSchedule = new FullSchedule(
         {
             "label": "Two Exams",
             "daysApplicable": [
+                DateTime.fromISO("2024-12-18"),
+                DateTime.fromISO("2024-12-19"),
+                DateTime.fromISO("2024-12-20"),
                 DateTime.fromISO("2024-05-22"),
                 DateTime.fromISO("2024-05-23"),
                 DateTime.fromISO("2024-05-24")
@@ -60,7 +63,8 @@ export let fullSchedule = new FullSchedule(
         {
             "label": "One Exam",
             "daysApplicable": [
-                DateTime.fromISO("2024-05-21")
+                DateTime.fromISO("2024-12-17"),
+                DateTime.fromISO("2024-05-21"),
             ],
             "periods": [
                 {start: Time("08:30"), end: Time("09:05"), label: "1st Period"},
