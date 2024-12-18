@@ -81,7 +81,7 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        // this.offset = safeFromUTCString("2024-12-17T8:30:10").diff(DateTime.now()); // TODO: RE-COMMENT
+        this.offset = safeFromUTCString("2024-12-19T08:29:58").diff(DateTime.now()); // TODO: RE-COMMENT
         // console.log(this.offset)
         // this.offset = Duration.fromMillis(0);
         let nowTime = DateTime.now().plus(this.offset ? this.offset : 0);
@@ -93,38 +93,22 @@ export class FullSchedule {
             todaySchedule: Schedule,
             endOfDay: Break
         } {
-            console.log(`FINDING SCHEDULE FOR TIME ${time.toISODate()}T${time.toISOTime()}, shallowFindScheduleOnly: ${shallowFindScheduleOnly}`)
+            console.log(`%cFINDING SCHEDULE FOR TIME ${time.toISODate()}T${time.toISOTime()}, shallowFindScheduleOnly: ${shallowFindScheduleOnly}`, shallowFindScheduleOnly ? "color:#8cffbc":"color:cyan")
             let foundSchedule = false;
-            let todaySchedule: Schedule;
+            let foundTodaySchedule: Schedule | undefined = undefined;
             let endOfDay: Break;
-            // Check if we are in a break
-            for (const break_ of breaks) {
-                if (break_.interval.contains(time)) {
-                    todaySchedule = break_;
-                    endOfDay = break_;
-                    // The break might end at 23:59, so extend it to the next day (if it has periods)
-                    if (!shallowFindScheduleOnly && break_.interval.end?.toISOTime().includes("23:59")) {
-                        let tmwSchedule = findSchedule(break_.interval.end.plus({"hours": 1}), true);
-                        console.log(tmwSchedule.todaySchedule.periods.length)
-                        if (tmwSchedule.todaySchedule.periods.length > 0) {
-                            endOfDay.interval = endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
-                        }
-                    }
-                    foundSchedule = true;
-                    break;
-                }
-            }
+
             // Check if we are in a special schedule
             if (!foundSchedule) for (const specialSchedule of specialSchedules) {
                 for (const [i, day] of specialSchedule.daysApplicable.entries()) {
                     if (day.hasSame(time, "day")) {
                         console.log("FOUND SPECIAL SCHEDULE")
-                        todaySchedule = specialSchedule;
+                        foundTodaySchedule = specialSchedule;
 
-                        console.log({todaySchedule: todaySchedule})
+                        console.log({todaySchedule: foundTodaySchedule})
 
-                        // copy over only times from the special schedule
-                        todaySchedule.periods = todaySchedule.periods.map(period => {
+                        // copy over only times from the special schedule THIS SOMEHOW CARRIES OVER TO THE OUTER SCOPE'S todaySchedule
+                        if (!shallowFindScheduleOnly) foundTodaySchedule.periods = foundTodaySchedule.periods.map(period => {
                             return {
                                 start: toCurrentDay(period.start, time),
                                 end: toCurrentDay(period.end, time),
@@ -132,11 +116,10 @@ export class FullSchedule {
                             }
                         });
 
-                        // check if we have a specific label for this day
+                        // check if we have a specific label for this day THIS MAY ALSO CARRY OVER TO THE OUTER SCOPE'S todaySchedule TODO: FIX THIS CARRY OVER SO LABELS AREN'T REWRITTEN
                         if (specialSchedule.specificDayLabels && !shallowFindScheduleOnly) {
                             for (const [j, specificDay] of specialSchedule.specificDayLabels[i].entries()) {
-                                todaySchedule.periods[j].label = specificDay;
-
+                                foundTodaySchedule.periods[j].label = specificDay;
                             }
                         }
 
@@ -168,18 +151,35 @@ export class FullSchedule {
                         foundSchedule = true;
                         break
                     }
+                } if (foundSchedule) break;
+            }
+            // Check if we are in a break
+            if (!foundSchedule) for (const break_ of breaks) {
+                if (break_.interval.contains(time)) {
+                    foundTodaySchedule = break_;
+                    endOfDay = break_;
+                    // The break might end at 23:59, so extend it to the next day (if it has periods)
+                    if (!shallowFindScheduleOnly && break_.interval.end?.toISOTime().includes("23:59")) {
+                        let tmwSchedule = findSchedule(break_.interval.end.plus({"hours": 1}), true);
+                        console.log(tmwSchedule.todaySchedule.periods.length)
+                        if (tmwSchedule.todaySchedule.periods.length > 0) {
+                            endOfDay.interval = endOfDay.interval.set({end: tmwSchedule.todaySchedule.periods[0].start});
+                        }
+                    }
+                    foundSchedule = true;
+                    break;
                 }
             }
             // Check if we are in a normal schedule
             if (!foundSchedule) for (const normalSchedule of normalSchedules) {
                 if (normalSchedule.days.includes(<1 | 2 | 3 | 4 | 5 | 6 | 7>time.weekday)) {
-                    todaySchedule = {
+                    foundTodaySchedule = {
                         label: normalSchedule.label,
                         periods: [...normalSchedule.periods],
 
                     };
                     // Convert to the time's day
-                    todaySchedule.periods = todaySchedule.periods.map(period => {
+                    foundTodaySchedule.periods = foundTodaySchedule.periods.map(period => {
                         return {
                             start: toCurrentDay(period.start, time),
                             end: toCurrentDay(period.end, time),
@@ -216,7 +216,7 @@ export class FullSchedule {
             }
             // Check if we are in a weekend
             if (!foundSchedule) {
-                todaySchedule = {
+                foundTodaySchedule = {
                     label: "Weekend",
                     periods: [],
                 }
@@ -230,13 +230,25 @@ export class FullSchedule {
                 }
             }
             // @ts-ignore we know todaySchedule and endOfDay are defined
-            return {todaySchedule, endOfDay}
+            return {todaySchedule: foundTodaySchedule, endOfDay}
         }
-
+        console.log("%c-- FINDING SCHEDULE --", "color:#aaaaff;font-weight:bold")
         let fullSchedule = findSchedule(nowTime, false);
         this.todaySchedule = fullSchedule.todaySchedule;
         this.endOfDay = fullSchedule.endOfDay;
+        console.log("%cFinding Start of Day", "color: #aaffaa;font-weight:bold")
         this.startOfDay = findSchedule(nowTime.minus({days: 1}), false).endOfDay;
+
+        console.log(`%cSetting Everything Up for ${nowTime.toISODate()}T${nowTime.toISOTime()}`, "color:#ff87ff;font-weight:bold")
+        // Just in case, set today's periods to today
+        this.todaySchedule.periods = this.todaySchedule.periods.map(period => {
+            return {
+                start: toCurrentDay(period.start, nowTime),
+                end: toCurrentDay(period.end, nowTime),
+                label: period.label,
+            }
+        });
+        console.log(`%c${JSON.stringify(this.todaySchedule.periods)}`, "color:#ff87ff;")
 
 
         let updateInSchedule = () => {
@@ -331,8 +343,9 @@ export class FullSchedule {
         if (this.todaySchedule.periods.length !== 0) {
             // Find week start and end (working backwards and forward from today, if today is a weekday)
             // Work backwards from today until finding the most previous day that has a schedule
-            let weekStart = this.todaySchedule.periods[0].start;
+            let weekStart = DateTime.fromMillis(this.todaySchedule.periods[0].start.toMillis());
             for (let i = 0; i < 50; i++) { // 50 is an arbitrary number, but it should be enough to find the week start (I hope there aren't any 50-day weeks)
+                console.log("%cFinding Week Start", "color:#ffdf87;")
                 let dayPriorSchedule = findSchedule(weekStart.minus({days: 1}), true).todaySchedule;
                 if (dayPriorSchedule.periods.length === 0) { // If the day prior has no periods, we have found the week start
                     break;
@@ -340,22 +353,25 @@ export class FullSchedule {
                 weekStart = dayPriorSchedule.periods[0].start
             }
             // Work forwards from today until finding the most next day that has a schedule
-            let weekEnd = this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end;
+            let weekEnd = DateTime.fromMillis(this.todaySchedule.periods[this.todaySchedule.periods.length - 1].end.toMillis());
             for (let i = 0; i < 50; i++) { // 50 is an arbitrary number, but it should be enough to find the weekend (I hope there aren't any 50-day weeks)
+                console.log("%cFinding Week End", "color:#ffdf87;")
                 let dayAfterSchedule = findSchedule(weekEnd.plus({days: 1}), true).todaySchedule;
+                console.assert(this.todaySchedule.periods[0].start.hasSame(nowTime, "day"), "Today's periods are not on the same day as now")
                 if (dayAfterSchedule.periods.length === 0) { // If the day after has no periods, we have found the weekend
                     break;
                 }
-                weekEnd = dayAfterSchedule.periods[dayAfterSchedule.periods.length - 1].end
+                weekEnd = dayAfterSchedule.periods[dayAfterSchedule.periods.length - 1].end.set({"day": weekEnd.day + 1})
             }
             // @ts-ignore - Already checked that this.todaySchedule.periods is not empty
             this.bars.week.start = weekStart;
             // @ts-ignore
             this.bars.week.end = weekEnd;
-            console.log(this.bars.week?.start, this.bars.week?.end)
+            console.log("%cFound Week Bounds:", "color:#fffb8c", this.bars.week?.start, this.bars.week?.end)
         }
 
-        console.log({this: this, bars: this.bars})
+        console.assert(this.todaySchedule.periods[0].start.hasSame(nowTime, "day"), "Today's periods are not on the same day as now")
+        console.log("%cDebug This/Bars", "color:#00dd00;", {this: this, bars: this.bars})
     }
 
     update() {
@@ -408,14 +424,26 @@ export class FullSchedule {
                 console.log("Starting Day!")
             }
         }
+        if (this.bars.period &&  (!this.bars.period.start || !this.bars.period.end || !this.bars.period.start.isValid || !this.bars.period.end.isValid)) {
+            console.error("%cPeriod start or end is not valid", "color:red;")
+            console.log(this.bars.period)
+            this.bars.period = undefined;
+
+        }
         if (this.bars.period) {
             // Check if we have passed end of last period
             let currentPeriod = -1; // The last period for which now > start
             for (let i = this.todaySchedule.periods.length - 1; i >= 0; i--) {
-                if (now > this.todaySchedule.periods[i]?.start) {
+                // In theory, the period should already be in the current day
+                if (now > toCurrentDay(this.todaySchedule.periods[i]?.start, now)) {
                     currentPeriod = i;
                     break;
                 }
+            }
+            if (!this.todaySchedule.periods[currentPeriod]) {
+                console.error(`%cNo current period found: ${currentPeriod}, periods: ${JSON.stringify(this.todaySchedule.periods)}`, "color:red;")
+                this.bars.period = undefined;
+                return;
             }
             // Check if we are in the period
             if (this.todaySchedule.periods[currentPeriod]!.start < now && now < this.todaySchedule.periods[currentPeriod]!.end) {
@@ -426,7 +454,7 @@ export class FullSchedule {
                 // console.log("In Period!")
             }
             // console.log({currentPeriod: currentPeriod, todaySchedule: this.todaySchedule})
-            if (this.bars.period.end < now && now < this.todaySchedule.periods[currentPeriod + 1]!.start) {
+            if (this.todaySchedule.periods[currentPeriod + 1] && this.bars.period.end < now && now < this.todaySchedule.periods[currentPeriod + 1].start) {
                 // We are between periods
                 this.bars.period.label = "Until " + this.todaySchedule.periods[currentPeriod + 1]!.label;
                 this.bars.period.start = this.todaySchedule.periods[currentPeriod]!.end;
@@ -443,12 +471,8 @@ export class FullSchedule {
                 console.log("Next Period!")
             }
 
-            // Update percent done and time left
-            this.bars.period.percentDone = getPercentDone(this.bars.period.start, this.bars.period.end, now);
-            this.bars.period.timeLeft = this.bars.period.end.diff(now);
-
             // Check if we have passed end of last period and this ends the day, so we should start the break
-            if (this.bars.period.end < now && this.endOfDay.interval.end == this.bars.period.end) {
+            if (this.bars.period.end < now && this.endOfDay.interval.start?.equals(this.bars.period.end)) {
                 this.bars.period = undefined;
                 // Initialize to break
                 this.bars.break = {
@@ -467,7 +491,14 @@ export class FullSchedule {
                     showEndpoints: false
                 }
                 console.log("Starting Post-School Break!")
+                return;
             }
+
+            // Update percent done and time left
+            this.bars.period.percentDone = getPercentDone(this.bars.period.start, this.bars.period.end, now);
+            this.bars.period.timeLeft = this.bars.period.end.diff(now);
+
+
         }
     }
 }
