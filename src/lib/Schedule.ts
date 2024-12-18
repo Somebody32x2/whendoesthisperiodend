@@ -81,7 +81,7 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        this.offset = safeFromUTCString("2024-12-19T08:29:58").diff(DateTime.now()); // TODO: RE-COMMENT
+        // this.offset = safeFromUTCString("2024-12-19T08:29:58").diff(DateTime.now()); // TODO: RE-COMMENT
         // console.log(this.offset)
         // this.offset = Duration.fromMillis(0);
         let nowTime = DateTime.now().plus(this.offset ? this.offset : 0);
