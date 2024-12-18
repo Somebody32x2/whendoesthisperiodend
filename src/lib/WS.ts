@@ -50,9 +50,12 @@ export let fullSchedule = new FullSchedule(
                 DateTime.fromISO("2024-05-24")
             ],
             specificDayLabels: [
-                ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
-                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
                 ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
+                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
+                ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
+                ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
+                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
+                ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
             ],
             "periods": [
                 {start: Time("8:30"), end: Time("10:55"), label: "Exam 1"},
