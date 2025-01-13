@@ -104,7 +104,7 @@ export let fullSchedule = new FullSchedule(
         {
             label: "Mental Health/Resiliency Day",
             daysApplicable: [
-                DateTime.fromISO("2024-12-11")
+                DateTime.fromISO("2025-01-15")
             ],
             periods: [
                 {start: Time("08:30"), end: Time("09:13"), label: "1st Period"},

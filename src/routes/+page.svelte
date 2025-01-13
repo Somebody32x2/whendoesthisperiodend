@@ -24,7 +24,6 @@
     let decimalModifier = 0;
 
     function calculateDecimals(bar: ProgressBar) { // TODO: Don't run each update
-        // console.log(bar)
         return Math.floor(Math.log10(bar.end.toMillis() - bar.start.toMillis()) - 3) + decimalModifier;
     }
 

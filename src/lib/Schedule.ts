@@ -6,6 +6,7 @@ import {
     ProgressBarType,
     safeFromUTCString, toCurrentDay
 } from "$lib/Utils";
+import {dev} from '$app/environment';
 import {DateTime, Duration, Interval, type WeekdayNumbers} from "luxon";
 import type {ProgressBar} from "$lib/ProgressBar";
 
@@ -81,7 +82,7 @@ export class FullSchedule {
     constructor(normalSchedules: NormalSchedule[], specialSchedules: SpecialSchedule[], breaks: Break[], normalWeekendConfig: NormalWeekendConfig, additionalBars: {
         [type: string]: ProgressBar
     }) {
-        // this.offset = safeFromUTCString("2024-12-19T08:29:58").diff(DateTime.now()); // TODO: RE-COMMENT
+        // if (dev) this.offset = safeFromUTCString("2024-12-19T08:29:58").diff(DateTime.now());
         // console.log(this.offset)
         // this.offset = Duration.fromMillis(0);
         let nowTime = DateTime.now().plus(this.offset ? this.offset : 0);
@@ -107,7 +108,7 @@ export class FullSchedule {
 
                         console.log({todaySchedule: foundTodaySchedule})
 
-                        // copy over only times from the special schedule THIS SOMEHOW CARRIES OVER TO THE OUTER SCOPE'S todaySchedule
+                        // copy over only times from the special schedule (may carry over to outside scope, but copy should have been made)
                         if (!shallowFindScheduleOnly) foundTodaySchedule.periods = foundTodaySchedule.periods.map(period => {
                             return {
                                 start: toCurrentDay(period.start, time),
@@ -116,7 +117,7 @@ export class FullSchedule {
                             }
                         });
 
-                        // check if we have a specific label for this day THIS MAY ALSO CARRY OVER TO THE OUTER SCOPE'S todaySchedule TODO: FIX THIS CARRY OVER SO LABELS AREN'T REWRITTEN
+                        // check if we have a specific label for this day
                         if (specialSchedule.specificDayLabels && !shallowFindScheduleOnly) {
                             for (const [j, specificDay] of specialSchedule.specificDayLabels[i].entries()) {
                                 foundTodaySchedule.periods[j].label = specificDay;
@@ -234,7 +235,8 @@ export class FullSchedule {
         }
         console.log("%c-- FINDING SCHEDULE --", "color:#aaaaff;font-weight:bold")
         let fullSchedule = findSchedule(nowTime, false);
-        this.todaySchedule = fullSchedule.todaySchedule;
+        this.todaySchedule = {label: fullSchedule.todaySchedule.label, periods: [...fullSchedule.todaySchedule.periods]};
+        console.log("%cToday's Schedule", "color:#aaaaff;font-weight:bold")
         this.endOfDay = fullSchedule.endOfDay;
         console.log("%cFinding Start of Day", "color: #aaffaa;font-weight:bold")
         this.startOfDay = findSchedule(nowTime.minus({days: 1}), false).endOfDay;
