@@ -195,7 +195,7 @@ export let fullSchedule = new FullSchedule(
         semester: new RangesProgressBar("semesters", [
             // [DateTime.fromISO("2024-01-08T15:30"), DateTime.fromISO("2024-05-24T14:15")],
             [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-09T14:15")],
-            [DateTime.fromISO("2025-01-9T14:15"), DateTime.fromISO("2025-05-28T14:15")],
+            [DateTime.fromISO("2025-01-09T14:15"), DateTime.fromISO("2025-05-28T14:15")],
         ], ["1st Semester", "2nd Semester"], true, "lime", false),
         // year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2023-08-10T08:30"), DateTime.fromISO("2024-05-24T14:15"), true, "green", false),
         year: new RangesProgressBar("year", [
