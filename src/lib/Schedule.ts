@@ -359,7 +359,7 @@ export class FullSchedule {
             for (let i = 0; i < 50; i++) { // 50 is an arbitrary number, but it should be enough to find the weekend (I hope there aren't any 50-day weeks)
                 console.log("%cFinding Week End", "color:#ffdf87;")
                 let dayAfterSchedule = findSchedule(weekEnd.plus({days: 1}), true).todaySchedule;
-                console.assert(this.todaySchedule.periods[0].start.hasSame(nowTime, "day"), "Today's periods are not on the same day as now")
+                console.assert(this.todaySchedule.periods[0]?.start.hasSame(nowTime, "day"), "Today's periods are not on the same day as now")
                 if (dayAfterSchedule.periods.length === 0) { // If the day after has no periods, we have found the weekend
                     break;
                 }
@@ -372,7 +372,7 @@ export class FullSchedule {
             console.log("%cFound Week Bounds:", "color:#fffb8c", this.bars.week?.start, this.bars.week?.end)
         }
 
-        console.assert(this.todaySchedule.periods[0].start.hasSame(nowTime, "day"), "Today's periods are not on the same day as now")
+        console.assert(this.todaySchedule.periods[0]?.start.hasSame(nowTime, "day"), "Today's periods are not on the same day as now")
         console.log("%cDebug This/Bars", "color:#00dd00;", {this: this, bars: this.bars})
     }
 
