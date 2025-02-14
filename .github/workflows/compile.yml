@@ -47,6 +47,11 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+      - name: breakpoint
+        uses: namespacelabs/breakpoint-action@v0
+        with:
+          duration: 10m
+          authorized-users: Somebody32x2, somebody32x2
       - name: Update
         run: | 
             cd ./build
