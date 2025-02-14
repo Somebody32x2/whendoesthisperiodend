@@ -153,11 +153,11 @@ export let fullSchedule = new FullSchedule(
             periods: [],
             interval: Interval.fromDateTimes(DateTime.fromISO("2025-01-17T14:15"), DateTime.fromISO("2025-01-20T23:59"))
         },
-        {
-            label: "President's Day Weekend",
-            periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2025-02-14T14:15"), DateTime.fromISO("2025-02-17T23:59"))
-        },
+        // {
+        //     label: "President's Day Weekend",
+        //     periods: [],
+        //     interval: Interval.fromDateTimes(DateTime.fromISO("2025-02-14T14:15"), DateTime.fromISO("2025-02-17T23:59"))
+        // },
         {
             label: "Long Weekend - Student Holiday",
             periods: [],
