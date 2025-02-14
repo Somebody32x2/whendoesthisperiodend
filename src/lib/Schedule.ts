@@ -203,7 +203,7 @@ export class FullSchedule {
                             label: "Until Tomorrow",
                             interval: Interval.fromDateTimes(
                                 normalSchedule.periods[normalSchedule.periods.length - 1].end,
-                                findSchedule(time.plus({days: 1}), true).todaySchedule.periods[0].start // TODO: Stop this from modifying the todaySchedule.periods array
+                                findSchedule(time.plus({days: 1}), true).todaySchedule.periods[0].start // TODO: Stop this from modifying the todaySchedule.periods array (there definitely is a bug here)
                             ),
                             periods: []
                         }
