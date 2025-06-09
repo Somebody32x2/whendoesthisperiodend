@@ -45,17 +45,17 @@ export let fullSchedule = new FullSchedule(
                 DateTime.fromISO("2024-12-18"),
                 DateTime.fromISO("2024-12-19"),
                 DateTime.fromISO("2024-12-20"),
-                DateTime.fromISO("2024-05-22"),
-                DateTime.fromISO("2024-05-23"),
-                DateTime.fromISO("2024-05-24")
+                DateTime.fromISO("2025-05-22"),
+                DateTime.fromISO("2025-05-23"),
+                DateTime.fromISO("2025-05-24")
             ],
             specificDayLabels: [
                 ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
                 ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
                 ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
-                ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
-                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
                 ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
+                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
+                ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
             ],
             "periods": [
                 {start: Time("8:30"), end: Time("10:55"), label: "Exam 1"},
@@ -67,7 +67,7 @@ export let fullSchedule = new FullSchedule(
             "label": "One Exam",
             "daysApplicable": [
                 DateTime.fromISO("2024-12-17"),
-                DateTime.fromISO("2024-05-21"),
+                DateTime.fromISO("2025-05-21"),
             ],
             "periods": [
                 {start: Time("08:30"), end: Time("09:05"), label: "1st Period"},
