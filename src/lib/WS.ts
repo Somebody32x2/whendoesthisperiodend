@@ -176,7 +176,7 @@ export let fullSchedule = new FullSchedule(
         {
             label: "Summer Break",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-05-24T14:15"), DateTime.fromISO("2024-08-11T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-05-28T14:15"), DateTime.fromISO("2025-08-11T23:59"))
         }
     ],
     {
@@ -186,21 +186,21 @@ export let fullSchedule = new FullSchedule(
         endTime: Time(8, 30, ImperialTimePostfix.AM)
     },
     {
-        quarter: new RangesProgressBar("quarters", [
-            // [DateTime.fromISO("2024-03-14T08:30"), DateTime.fromISO("2024-05-24T14:15")],
-            [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2024-10-11T14:15")],
-            [DateTime.fromISO("2024-10-15T08:30"), DateTime.fromISO("2025-01-09T14:15")],
-            [DateTime.fromISO("2025-01-10T08:30"), DateTime.fromISO("2025-03-13T14:15")],
-            [DateTime.fromISO("2025-03-24T08:30"), DateTime.fromISO("2025-05-28T14:15")],
-        ], ["1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter"], true, "yellow", false),
-        semester: new RangesProgressBar("semesters", [
-            // [DateTime.fromISO("2024-01-08T15:30"), DateTime.fromISO("2024-05-24T14:15")],
-            [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-09T14:15")],
-            [DateTime.fromISO("2025-01-09T14:15"), DateTime.fromISO("2025-05-28T14:15")],
-        ], ["1st Semester", "2nd Semester"], true, "lime", false),
+        // quarter: new RangesProgressBar("quarters", [
+        //     // [DateTime.fromISO("2024-03-14T08:30"), DateTime.fromISO("2024-05-24T14:15")],
+        //     [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2024-10-11T14:15")],
+        //     [DateTime.fromISO("2024-10-15T08:30"), DateTime.fromISO("2025-01-09T14:15")],
+        //     [DateTime.fromISO("2025-01-10T08:30"), DateTime.fromISO("2025-03-13T14:15")],
+        //     [DateTime.fromISO("2025-03-24T08:30"), DateTime.fromISO("2025-05-28T14:15")],
+        // ], ["1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter"], true, "yellow", false),
+        // semester: new RangesProgressBar("semesters", [
+        //     // [DateTime.fromISO("2024-01-08T15:30"), DateTime.fromISO("2024-05-24T14:15")],
+        //     [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-09T14:15")],
+        //     [DateTime.fromISO("2025-01-09T14:15"), DateTime.fromISO("2025-05-28T14:15")],
+        // ], ["1st Semester", "2nd Semester"], true, "lime", false),
         // year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2023-08-10T08:30"), DateTime.fromISO("2024-05-24T14:15"), true, "green", false),
         year: new RangesProgressBar("year", [
-            // [DateTime.fromISO("2023-08-10T08:30"), DateTime.fromISO("2024-05-24T14:15")],
             [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-05-28T14:15")],
+            // [DateTime.fromISO("2025-08-11T23:59"), DateTime.fromISO("2025-05-25T14:15")],
         ], ["the School Year"], true, "green", false),
     })
