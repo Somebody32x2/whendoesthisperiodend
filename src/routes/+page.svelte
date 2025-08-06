@@ -5,6 +5,8 @@
     import {scheduleBarTypes} from "$lib/Schedule";
     import {DateTime} from "luxon";
     import type {ProgressBar} from "$lib/ProgressBar";
+    import {StaticProgressBar} from "$lib/StaticProgressBar";
+    import {safeFromUTCString} from "$lib/Utils";
 
     let schedule = fullSchedule
 
@@ -13,6 +15,10 @@
     let updateCount = 0;
     let updateOnce = 0;
     let scheduleValues = new Array(scheduleBarTypes.length).fill(0);
+    let extraBars = {
+        "grad" : new StaticProgressBar("grad", "Senior Graduation 🎉", DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-22T08:30"), true, "yellow", false),
+    }
+    let extraValues = new Array().fill(0);
 
     function getTimeLeftLabel(bar: ProgressBar) {
         return bar.timeLeft.toFormat(
@@ -52,6 +58,10 @@
             for (let i = 0; i < scheduleBarTypes.length; i++) {
                 // console.log({i, type: scheduleBarTypes[i], schedule: schedule.bars})
                 if (schedule.bars[scheduleBarTypes[i]]) scheduleValues[i] = schedule.bars[scheduleBarTypes[i]]?.percentDone;
+            }
+            for (let index = 0; index < Object.keys(extraBars).length; index++) {
+                extraBars[Object.keys(extraBars)[index]].update();
+                extraValues[index] = extraBars[Object.keys(extraBars)[index]]?.percentDone;
             }
             let bars = Object.keys(schedule.bars).filter(bar => schedule.bars[bar] !== undefined)
             if (bars.some(bar => !lastBars.includes(bar)) || bars.length !== lastBars.length) {
@@ -98,6 +108,39 @@
                         <Progress
                                 tween
                                 bind:value={scheduleValues[index]}
+                                color={bar.color}
+                                size="xs"
+                                radius="sm"
+                                striped
+                                animate
+                                class="w-full py-2"
+                        />
+                    </div>
+                {/if}
+            {/each}
+            {#each Object.entries(extraBars) as [barInterval, bar], index (barInterval)}
+                <!--                <p>{barInterval}</p>-->
+                {#if !!bar}
+                    <div class="mt-10 px-2">
+                        {#key updateCount}
+                            <div class="text-md sm:text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
+                                <p class="lg:mx-2">
+                                    <b class="text-lg sm:text-xl lg:text-2xl">{bar.percentDone.toFixed(calculateDecimals(bar))}</b>%
+                                    done
+                                    with {bar.label}</p>
+                                <!--{#if barInterval === scheduleBarTypes[0] && bar.label !== ""}-->
+                                <!--    <p></p>-->
+                                <!--{/if}-->
+                                <p class="text-lg sm:text-xl lg:text-2xl">
+                                    (<b>{getTimeLeftLabel(bar)}</b><!--
+                                -->&nbsp;{bar.timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
+                                --><b>{bar.showEndpoints ? ` | ${bar.start.toFormat("h:mma")} - ${bar.end.toFormat("h:mma")}`.replaceAll(" ", "\xa0") : ''}</b>)
+                                </p>
+                            </div>
+                        {/key}
+                        <Progress
+                                tween
+                                bind:value={extraValues[index]}
                                 color={bar.color}
                                 size="xs"
                                 radius="sm"
