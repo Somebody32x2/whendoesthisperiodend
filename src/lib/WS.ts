@@ -179,7 +179,7 @@ export let fullSchedule = new FullSchedule(
         {
             label: "Summer Break",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2025-05-28T14:15"), DateTime.fromISO("2025-08-11T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-05-28T14:15"), DateTime.fromISO("2025-08-10T23:59"))
         }
     ],
     {
