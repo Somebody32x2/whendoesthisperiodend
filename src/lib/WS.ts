@@ -2,6 +2,7 @@ import {FullSchedule} from "$lib/Schedule";
 import {ImperialTimePostfix, Time} from "$lib/Utils";
 import {DateTime, Interval} from "luxon";
 import {RangesProgressBar} from "$lib/RangesProgressBar";
+import {StaticProgressBar} from "$lib/StaticProgressBar";
 
 export let fullSchedule = new FullSchedule(
     // Normal Schedules
@@ -24,15 +25,17 @@ export let fullSchedule = new FullSchedule(
             label: "Friday",
             days: [5],
             periods: [
-                {start: Time("08:30"), end: Time("9:08"), label: "1st Period"},
-                {start: Time("09:12"), end: Time("9:50"), label: "2nd Period"},
-                {start: Time("09:54"), end: Time("10:32"), label: "3rd Period"},
-                {start: Time("10:36"), end: Time("11:14"), label: "4th Period"},
-                {start: Time("11:14"), end: Time("11:43"), label: "Homeroom/Lunch"},
-                {start: Time("11:44"), end: Time("12:13"), label: "Lunch/Homeroom"},
-                {start: Time("12:13"), end: Time("12:51"), label: "5th Period"},
-                {start: Time("12:55"), end: Time("13:33"), label: "6th Period"},
-                {start: Time("13:37"), end: Time("14:15"), label: "7th Period"},
+                {start: Time("08:30"), end: Time("9:09"), label: "1st Period"},
+                {start: Time("09:13"), end: Time("9:52"), label: "2nd Period"},
+                {start: Time("09:56"), end: Time("10:35"), label: "3rd Period"},
+                {start: Time("10:39"), end: Time("11:18"), label: "4th Period"},
+
+                {start: Time("11:22"), end: Time("11:51"), label: "Homeroom/Lunch"},
+                {start: Time("11:51"), end: Time("12:21"), label: "Lunch/Homeroom"},
+
+                {start: Time("12:25"), end: Time("13:04"), label: "5th Period"},
+                {start: Time("13:08"), end: Time("13:47"), label: "6th Period"},
+                {start: Time("13:51"), end: Time("14:30"), label: "7th Period"},
             ],
             endWithWeekend: true
         }
@@ -126,17 +129,17 @@ export let fullSchedule = new FullSchedule(
         {
             label: "Labor Day Weekend",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-08-30T14:15"), DateTime.fromISO("2023-09-02T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-09-01T14:15"), DateTime.fromISO("2025-09-01T23:59"))
         },
         {
             label: "Student Holiday",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-10-11T14:15"), DateTime.fromISO("2024-10-14T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-10-13T14:15"), DateTime.fromISO("2025-10-13T23:59"))
         },
         {
-            label: "Vetrans' Day Weekend",
+            label: "Vetrans' Day",
             periods: [],
-            interval: Interval.fromDateTimes(DateTime.fromISO("2024-11-08T14:15"), DateTime.fromISO("2024-11-11T23:59"))
+            interval: Interval.fromDateTimes(DateTime.fromISO("2025-11-11T08:30"), DateTime.fromISO("2025-11-11T23:59"))
         },
         {
             label: "Thanksgiving Break",
@@ -198,9 +201,9 @@ export let fullSchedule = new FullSchedule(
         //     [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-09T14:15")],
         //     [DateTime.fromISO("2025-01-09T14:15"), DateTime.fromISO("2025-05-28T14:15")],
         // ], ["1st Semester", "2nd Semester"], true, "lime", false),
-        // year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2023-08-10T08:30"), DateTime.fromISO("2024-05-24T14:15"), true, "green", false),
-        year: new RangesProgressBar("year", [
-            [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-05-28T14:15")],
-            // [DateTime.fromISO("2025-08-11T23:59"), DateTime.fromISO("2025-05-25T14:15")],
-        ], ["the School Year"], true, "green", false),
+        year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-27T14:30"), true, "green", false),
+        // year: new RangesProgressBar("year", [
+        //     [DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-27T14:30")],
+        //     // [DateTime.fromISO("2025-08-11T23:59"), DateTime.fromISO("2025-05-25T14:15")],
+        // ], ["the School Year"], true, "green", false),
     })
