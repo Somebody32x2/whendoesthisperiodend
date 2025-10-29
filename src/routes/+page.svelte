@@ -16,7 +16,7 @@
     let updateOnce = 0;
     let scheduleValues = new Array(scheduleBarTypes.length).fill(0);
     let extraBars = {
-        "grad" : new StaticProgressBar("grad", "Senior Graduation 🎉", DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-22T08:30"), true, "yellow", false),
+        "grad" : new StaticProgressBar("grad", "Senior Graduation 🎉", DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-21T08:30"), true, "yellow", false),
     }
     let extraValues = new Array().fill(0);
 
