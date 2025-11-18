@@ -126,7 +126,25 @@ export let fullSchedule = new FullSchedule(
                 {start: Time("14:47"), end: Time("15:30"), label: "7th Period"}
 
                 ]
-        }
+        },
+        {
+        label: "Anti Bullying BMX Day",
+        daysApplicable: [
+            DateTime.fromISO("2025-11-21"),
+        ],
+        periods: [
+            {start: Time("08:30"), end: Time("09:00"), label: "1st Period"},
+            {start: Time("09:04"), end: Time("09:34"), label: "2nd Period"},
+            {start: Time("09:38"), end: Time("10:08"), label: "3rd Period"},
+            {start: Time("10:12"), end: Time("10:46"), label: "4th Period"},
+            {start: Time("10:50"), end: Time("11:20"), label: "5th Period"},
+            {start: Time("11:24"), end: Time("12:26"), label: "Homeroom/Activity"},
+            {start: Time("12:31"), end: Time("13:22"), label: "Lunch"},
+            {start: Time("13:26"), end: Time("13:56"), label: "6th Period"},
+            {start: Time("14:00"), end: Time("14:30"), label: "7th Period"}
+
+        ]
+    }
     ],
     // Breaks
     [
