@@ -79,15 +79,15 @@
     // $: value1 = yearBar.percentDone;
 </script>
 <div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white relative">
-    <a class="underline hidden lg:block absolute top-0 right-1" href="/whendoesthisperiodend_old">Back to Old
-        Version</a>
+<!--    <a class="underline hidden lg:block absolute top-0 right-1" href="{'whendoesthisperiodend_old'}">Back to Old-->
+<!--        Version</a>-->
     <h1 class="text-3xl md:text-5xl font-black mx-10 max-lg:mt-8">When Does This Period End?</h1>
     <!--    <p class="text-3xl m-2">⚠️️️WIP⚠️</p>-->
     <div class="w-full md:w-[75%] text-center my-10">
         {#key fullUpdateRequest}
             {#each Object.entries(schedule.bars) as [barInterval, bar], index (barInterval)}
                 <!--                <p>{barInterval}</p>-->
-                {#if !!bar}
+                {#if !!bar && bar.start && bar.end && bar.timeLeft.isValid}
                     <div class="mt-10 px-2">
                         {#key updateCount}
                             <div class="text-md sm:text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">

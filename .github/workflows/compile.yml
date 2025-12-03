@@ -47,6 +47,12 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+      - name: Assert index.html was actually built
+        run: |
+            if [ ! -f "./build/index.html" ]; then
+                echo "Build failed: ./build/index.html not found!"
+                exit 1
+            fi
 #       - name: breakpoint
 #         uses: namespacelabs/breakpoint-action@v0
 #         with:
