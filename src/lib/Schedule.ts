@@ -199,11 +199,12 @@ export class FullSchedule {
                         }
                     } else if (!shallowFindScheduleOnly) {
                         // end of day is the next day
+                        let tomorrowSchedule = findSchedule(time.plus({days: 1}), true).todaySchedule;
                         endOfDay = {
                             label: "Until Tomorrow",
                             interval: Interval.fromDateTimes(
-                                normalSchedule.periods[normalSchedule.periods.length - 1].end,
-                                findSchedule(time.plus({days: 1}), true).todaySchedule.periods[0].start // TODO: Stop this from modifying the todaySchedule.periods array (there definitely is a bug here)
+                                toCurrentDay(normalSchedule.periods[normalSchedule.periods.length - 1].end, time),
+                                toCurrentDay(tomorrowSchedule.periods[0].start, time.plus({days: 1}))
                             ),
                             periods: []
                         }
