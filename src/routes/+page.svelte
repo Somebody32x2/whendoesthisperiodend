@@ -87,7 +87,7 @@
         {#key fullUpdateRequest}
             {#each Object.entries(schedule.bars) as [barInterval, bar], index (barInterval)}
                 <!--                <p>{barInterval}</p>-->
-                {#if !!bar}
+                {#if !!bar && bar.start && bar.end && bar.timeLeft.isValid}
                     <div class="mt-10 px-2">
                         {#key updateCount}
                             <div class="text-md sm:text-xl lg:text-2xl flex flex-col lg:flex-row justify-center">
