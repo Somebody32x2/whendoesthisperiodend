@@ -67,7 +67,7 @@
     <div class="w-[95%] md:w-[75%] text-center">
         {#key fullUpdateRequest}
             {#each Object.entries(schedule.bars) as [barInterval, bar], index (barInterval)}
-                {#if !!bar}
+                {#if !!bar && bar.start && bar.end && bar.timeLeft.isValid}
                     <div class="{index !== 1 ? 'mt-2' : ''} px-2">
                         {#key updateCount}
                             <div class="text-md sm:text-xl lg:text-2xl flex lg:flex-row justify-center">
