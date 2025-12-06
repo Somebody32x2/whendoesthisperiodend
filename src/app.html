@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="manifest" href="manifest.json" />
 		<script>
-			if (document && !document.location.pathname.endsWith('/')) {
+			if (document && !document.location.pathname.endsWith('/') && !document.location.pathname.split("/").pop().includes('.')) {
 				document.location.pathname += '/';
 			}
 		</script>
