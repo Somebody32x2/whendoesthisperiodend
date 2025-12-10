@@ -75,7 +75,7 @@
                                     <b class="text-lg sm:text-xl lg:text-2xl">{bar.percentDone.toFixed(calculateDecimals(bar))}</b>%
                                     done
                                     with {bar.label}</p>
-                                {#if barInterval != 'year'}
+                                {#if barInterval != 'year' && barInterval != 'week'}
                                 <p class="text-lg ml-1 lg:ml-0 sm:text-xl lg:text-2xl ">
                                     (<b>{getTimeLeftLabel(bar)}</b><!--
                                 -->&nbsp;{bar.timeLeft.milliseconds > 0 ? "left" : 'ago'}<!--
