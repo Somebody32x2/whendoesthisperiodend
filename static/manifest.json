@@ -1,7 +1,7 @@
 {
   "short_name": "WDTPE?",
   "name": "When Does This Period End | SamuelShuster.com",
-  "start_url": "samuelshuster.com/whendoesthisperiodend/",
+  "start_url": "https://samuelshuster.com/whendoesthisperiodend/",
   "icons": [
     {
       "src": "512.png",
@@ -11,14 +11,14 @@
   ],
   "background_color": "#1f2937",
   "display": "standalone",
-  "scope": "samuelshuster.com/whendoesthisperiodend/",
+  "scope": "/whendoesthisperiodend/",
   "theme_color": "#1f2937",
   "shortcuts": [
     {
       "name": "When Does This Period End?",
       "short_name": "Period",
       "description": "View the time left and percent done with the current period",
-      "url": "samuelshuster.com/whendoesthisperiodend/",
+      "url": "/",
       "icons": [
         {
           "src": "/192.png",
