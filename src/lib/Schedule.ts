@@ -400,7 +400,7 @@ export class FullSchedule {
             this.bars.week.percentDone = getPercentDone(this.bars.week.start, this.bars.week.end, now);
             this.bars.week.timeLeft = this.bars.week.end.diff(now);
         }
-        if (this.bars.break) {
+        if (this.bars.break && this.bars.break.start && this.bars.break.end) {
             this.bars.break.percentDone = getPercentDone(this.bars.break.start, this.bars.break.end, now);
             this.bars.break.timeLeft = this.bars.break.end.diff(now);
             // Check if we have passed start of 1st period and this ends the break
