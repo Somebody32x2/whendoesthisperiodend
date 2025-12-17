@@ -58,9 +58,9 @@ export let fullSchedule = new FullSchedule(
                 // ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
             ],
             "periods": [
-                {start: Time("8:30"), end: Time("10:55"), label: "Exam 1"},
-                {start: Time("10:55"), end: Time("11:55"), label: "Power Hour"},
-                {start: Time("11:55"), end: Time("14:15"), label: "Exam 2"},
+                {start: Time("8:30"), end: Time("10:50"), label: "Exam 1"},
+                {start: Time("10:50"), end: Time("12:05"), label: "Power Hour"},
+                {start: Time("12:10"), end: Time("14:30"), label: "Exam 2"},
             ]
         },
         {
