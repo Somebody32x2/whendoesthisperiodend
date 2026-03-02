@@ -109,7 +109,7 @@ export let fullSchedule = new FullSchedule(
                 DateTime.fromISO("2025-12-10"),
                 DateTime.fromISO("2026-01-08"),
                 DateTime.fromISO("2026-02-11"),
-                DateTime.fromISO("2026-03-02")
+                // DateTime.fromISO("2026-03-02")
             ],
             periods: [
                 {start: Time("08:30"), end: Time("09:13"), label: "1st Period"},
