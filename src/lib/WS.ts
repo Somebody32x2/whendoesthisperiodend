@@ -141,6 +141,24 @@ export let fullSchedule = new FullSchedule(
                 {start: Time("14:00"), end: Time("14:30"), label: "7th Period"}
 
             ]
+        },
+        {
+            label: "Spring Festival",
+            daysApplicable: [
+                DateTime.fromISO("2026-03-12"),
+            ],
+            periods: [
+                {start: Time("08:30"), end: Time("09:00"), label: "1st Period"},
+                {start: Time("09:04"), end: Time("09:34"), label: "2nd Period"},
+                {start: Time("09:38"), end: Time("10:08"), label: "3rd Period"},
+                {start: Time("10:12"), end: Time("10:42"), label: "4th Period"},
+                {start: Time("10:46"), end: Time("11:16"), label: "5th Period"},
+                {start: Time("11:20"), end: Time("11:50"), label: "6th Period"},
+                {start: Time("11:54"), end: Time("12:24"), label: "7th Period"},
+                {start: Time("12:24"), end: Time("13:00"), label: "Lunch"},
+                {start: Time("13:00"), end: Time("15:30"), label: "Activity!"}
+
+            ]
         }
     ],
     // Breaks
