@@ -238,7 +238,7 @@ export let fullSchedule = new FullSchedule(
         //     [DateTime.fromISO("2024-08-12T08:30"), DateTime.fromISO("2025-01-09T14:15")],
         //     [DateTime.fromISO("2025-01-09T14:15"), DateTime.fromISO("2025-05-28T14:15")],
         // ], ["1st Semester", "2nd Semester"], true, "lime", false),
-        year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-27T14:30"), true, "green", false),
+        year: new StaticProgressBar("year", "the School Year", DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-22T14:30"), true, "green", false),
         // year: new RangesProgressBar("year", [
         //     [DateTime.fromISO("2025-08-11T08:30"), DateTime.fromISO("2026-05-27T14:30")],
         //     // [DateTime.fromISO("2025-08-11T23:59"), DateTime.fromISO("2025-05-25T14:15")],
