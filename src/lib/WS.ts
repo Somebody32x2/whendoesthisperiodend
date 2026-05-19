@@ -45,39 +45,42 @@ export let fullSchedule = new FullSchedule(
         {
             "label": "Two Exams",
             "daysApplicable": [
-                DateTime.fromISO("2025-12-17"),
-                DateTime.fromISO("2025-12-18"),
-                DateTime.fromISO("2025-12-19"),
+                DateTime.fromISO("2026-05-20"),
+                DateTime.fromISO("2026-05-21"),
+                DateTime.fromISO("2026-05-22"),
+                // DateTime.fromISO("2025-12-17"),
+                // DateTime.fromISO("2025-12-18"),
+                // DateTime.fromISO("2025-12-19"),
             ],
             specificDayLabels: [
-                ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
-                ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
-                ["Period #5 Exam ", "Power Hour", "Period #6 Exam"]
+                ["Period #7 Exam ", "Power Hour", "Period #6 Exam"],
+                ["Period #5 Exam ", "Power Hour", "Period #4 Exam"],
+                ["Period #3 Exam ", "Power Hour", "Period #2 Exam"]
                 // ["Period #5 Exam ", "Power Hour", "Period #6 Exam"],
                 // ["Period #3 Exam ", "Power Hour", "Period #4 Exam"],
                 // ["Period #1 Exam ", "Power Hour", "Period #2 Exam"],
             ],
             "periods": [
-                {start: Time("8:30"), end: Time("10:50"), label: "Exam 1"},
-                {start: Time("10:50"), end: Time("12:05"), label: "Power Hour"},
-                {start: Time("12:10"), end: Time("14:30"), label: "Exam 2"},
+                {start: Time("8:30"), end: Time("10:55"), label: "Exam 1"},
+                {start: Time("10:55"), end: Time("12:00"), label: "Power Hour"},
+                {start: Time("12:05"), end: Time("14:30"), label: "Exam 2"},
             ]
         },
         {
             "label": "One Exam",
             "daysApplicable": [
-                DateTime.fromISO("2025-12-16"),
+                DateTime.fromISO("2026-05-19"),
                 // DateTime.fromISO("2025-05-21"),
             ],
             "periods": [
-                {start: Time("08:30"), end: Time("09:05"), label: "1st Period"},
-                {start: Time("09:09"), end: Time("09:41"), label: "2nd Period"},
-                {start: Time("09:45"), end: Time("10:17"), label: "3rd Period"},
-                {start: Time("10:21"), end: Time("10:53"), label: "4th Period"},
-                {start: Time("10:57"), end: Time("11:29"), label: "5th Period"},
-                {start: Time("11:29"), end: Time("12:31"), label: "Power Hour"},
-                {start: Time("12:31"), end: Time("13:06"), label: "6th Period"},
-                {start: Time("13:10"), end: Time("15:30"), label: "7th Period Exam"}
+                {start: Time("08:30"), end: Time("10:55"), label: "1st Period Exam"},
+                {start: Time("10:59"), end: Time("11:32"), label: "2nd Period"},
+                {start: Time("11:34"), end: Time("12:29"), label: "Power Hour"},
+                {start: Time("12:29"), end: Time("13:02"), label: "3th Period"},
+                {start: Time("13:06"), end: Time("13:39"), label: "4th Period"},
+                {start: Time("13:43"), end: Time("14:16"), label: "5th Period"},
+                {start: Time("14:20"), end: Time("14:53"), label: "6th Period"},
+                {start: Time("14:57"), end: Time("15:30"), label: "7th Period"}
             ]
         },
         {
