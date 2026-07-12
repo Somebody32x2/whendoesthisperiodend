@@ -80,7 +80,12 @@ export function toCurrentDay(time: DateTime, currentTime= DateTime.now()): DateT
     });
 }
 export function nthString(i: number) {
-    return `${i + 1}${i + 1 === 1 ? "st" : (i + 1) % 10 === 2 ? "nd" : i + 1 === 3 ? "rd" : "th"}`;
+    const n = i + 1;
+    const suffix = n % 100 >= 11 && n % 100 <= 13 ? "th"
+        : n % 10 === 1 ? "st"
+            : n % 10 === 2 ? "nd"
+                : n % 10 === 3 ? "rd" : "th";
+    return `${n}${suffix}`;
 }
 
 export function safeFromUTCString(dateString: string): DateTime {

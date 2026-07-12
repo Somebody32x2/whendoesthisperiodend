@@ -8,7 +8,7 @@ export const handleError: HandleServerError = ({error, event}) => {
 
     // In dev you can return the stack to the client; in prod return a safe message
     return {
-        message: dev ? error.message : 'Internal Server Error'
+        message: dev && error instanceof Error ? error.message : 'Internal Server Error'
         // don't return stack in prod to avoid leaking sensitive info
     };
 };
