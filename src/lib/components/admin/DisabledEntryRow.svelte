@@ -44,8 +44,8 @@
             before saving.</p>
     </div>
 {:else}
-    <div class="mb-3 rounded-lg border border-gray-300 dark:border-gray-500 p-3">
-        <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+    <div class="mb-4 rounded-xl border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-700/40 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between gap-2 flex-wrap px-4 py-2.5 bg-gray-50 dark:bg-gray-700/60 border-b border-gray-200 dark:border-gray-600">
             <span class="font-semibold">{title}</span>
             <div class="flex items-center gap-2">
                 <button type="button" onclick={ondisable}
@@ -58,6 +58,8 @@
                 </button>
             </div>
         </div>
-        {@render children()}
+        <div class="p-4">
+            {@render children()}
+        </div>
     </div>
 {/if}

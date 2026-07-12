@@ -8,7 +8,7 @@
 </script>
 
 <div class="w-full py-2">
-    <div class="h-2 w-full overflow-hidden rounded bg-gray-200 dark:bg-gray-600" role="progressbar"
+    <div class="h-4 w-full overflow-hidden rounded bg-gray-200 dark:bg-gray-600" role="progressbar"
          aria-valuemin="0" aria-valuemax="100" aria-valuenow={Math.round(clamped)}>
         <div class="h-full rounded progress-striped"
              style="width: {clamped}%; background-color: {BAR_COLORS[color] ?? BAR_COLORS.blue};"></div>

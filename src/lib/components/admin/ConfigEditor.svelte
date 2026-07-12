@@ -27,16 +27,44 @@
     let savedSnapshot = $state<SchoolConfig>(structuredClone($state.snapshot(initial)) as SchoolConfig);
 
     type TabKey = "schedules" | "special" | "breaks" | "weekend" | "bars" | "raw" | "preview";
-    const TABS: { key: TabKey, label: string }[] = [
-        {key: "schedules", label: "Schedules"},
-        {key: "special", label: "Special Days"},
-        {key: "breaks", label: "Breaks"},
-        {key: "weekend", label: "Weekend & Colors"},
-        {key: "bars", label: "Bars"},
-        {key: "raw", label: "Raw JSON"},
-        {key: "preview", label: "Preview"}
+    const TABS: { key: TabKey, label: string, note: string }[] = [
+        {
+            key: "schedules", label: "Normal Schedules",
+            note: "The default bell schedule for each weekday — the regular week, early-release Friday, and so on. " +
+                "Special schedules and breaks always take priority over these on their dates, so this tab rarely needs to change."
+        },
+        {
+            key: "special", label: "Special Schedules",
+            note: "One-off bell schedules for specific dates: exam days, assemblies, festivals. On its dates a special " +
+                "schedule replaces the normal one. Most routine upkeep happens here and in Breaks."
+        },
+        {
+            key: "breaks", label: "Breaks",
+            note: "Whole days with no school — holidays, long weekends, summer. Just the first and last day off; " +
+                "the countdown works out the exact start and end from the school days around each break."
+        },
+        {
+            key: "weekend", label: "Weekend & Colors",
+            note: "When the weekend starts and ends, and the color of each built-in bar."
+        },
+        {
+            key: "bars", label: "Extra Bars",
+            note: "Long-running progress bars like the school year, graduation, or quarters. Viewers can show or hide " +
+                "these from the gear menu on the main page."
+        },
+        {
+            key: "raw", label: "Raw JSON",
+            note: "The whole config as editable JSON, for bulk edits or pasting a config in. Apply validates before " +
+                "anything replaces the form."
+        },
+        {
+            key: "preview", label: "Preview",
+            note: "Exactly what the main page will show for this config — live, or at any simulated moment. Worth " +
+                "checking exam days and breaks here before saving."
+        }
     ];
     let activeTab = $state<TabKey>("schedules");
+    const activeTabMeta = $derived(TABS.find(t => t.key === activeTab)!);
 
     let saving = $state(false);
     let saveErrors = $state<string[]>([]);
@@ -110,13 +138,20 @@
         </div>
     </div>
 
-    <div class="flex gap-4 border-b border-gray-300 dark:border-gray-600 mb-4 overflow-x-auto">
+    <div class="flex gap-1 mb-4 overflow-x-auto rounded-lg bg-gray-100 dark:bg-gray-700/60 p-1">
         {#each TABS as tab (tab.key)}
             <button type="button" onclick={() => activeTab = tab.key}
-                    class="pb-2 px-1 text-sm whitespace-nowrap {activeTab === tab.key ? 'border-b-2 border-blue-600 font-semibold' : 'opacity-60 hover:opacity-100'}">
+                    class="px-3 py-1.5 text-sm whitespace-nowrap rounded-md transition-colors {activeTab === tab.key
+                        ? 'bg-white dark:bg-gray-800 shadow font-semibold'
+                        : 'opacity-70 hover:opacity-100 hover:bg-white/50 dark:hover:bg-gray-800/50'}">
                 {tab.label}
             </button>
         {/each}
+    </div>
+
+    <div class="mb-5">
+        <h3 class="text-xl font-bold">{activeTabMeta.label}</h3>
+        <p class="text-sm opacity-70 mt-1 max-w-3xl">{activeTabMeta.note}</p>
     </div>
 
     {#if activeTab === "schedules"}

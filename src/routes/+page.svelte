@@ -33,7 +33,9 @@
         }
     }
 
-    let pictureInPictureEnabled = $state(false);
+    // Optimistically true (matching the old prerendered page) so the button shows
+    // immediately; corrected in onMount for browsers without the API.
+    let pictureInPictureEnabled = $state(true);
     let inPip = $state(false);
     let pipWindow: Window | null = null;
     let mainProgressBars: HTMLElement | null = null;
@@ -80,6 +82,10 @@
     }
 
     async function handleTryPnp() {
+        if (!("documentPictureInPicture" in window)) {
+            pictureInPictureEnabled = false;
+            return;
+        }
         if (inPip) {
             handlePiPClose();
             return;
@@ -121,7 +127,10 @@
 
 <div class="w-full min-h-[100vh] flex items-center justify-center flex-col dark:bg-gray-800 dark:text-white relative"
      id="pageContainer">
-    <SchoolSwitcher {schools} {selected} onselect={(id) => void selectSchool(id)}/>
+    <!-- Pinned to the very top of the page (the rest of the content is vertically centered) -->
+    <div class="absolute top-0 inset-x-0 flex justify-center">
+        <SchoolSwitcher {schools} {selected} onselect={(id) => void selectSchool(id)}/>
+    </div>
     <ConfigDrawer contextKey={runner.contextKey} {config} onchange={() => runner.refresh()}/>
 
     <h1 class="text-3xl md:text-5xl font-black mx-10 max-lg:mt-4">When Does This Period End?</h1>

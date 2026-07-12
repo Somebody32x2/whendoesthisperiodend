@@ -22,8 +22,8 @@
     function addBreak() {
         onchange([...breaks, {
             label: "New Break",
-            start: "2026-01-01T00:00",
-            end: "2026-01-02T00:00",
+            start: schoolYear.start,
+            end: schoolYear.start,
             disabled: false
         }]);
     }
@@ -41,17 +41,18 @@
                            onchange={(e) => update(i, {label: e.currentTarget.value})}
                            class="mt-1 w-full rounded border border-gray-300 dark:border-gray-500 bg-transparent px-2 py-1 text-sm"/>
                 </label>
-                <div class="flex flex-wrap gap-3">
-                    <label class="text-sm">Start
-                        <input type="datetime-local" value={brk.start}
+                <div class="flex flex-wrap gap-3 items-end">
+                    <label class="text-sm">First day off
+                        <input type="date" value={brk.start}
                                onchange={(e) => update(i, {start: e.currentTarget.value})}
                                class="block mt-1 rounded border border-gray-300 dark:border-gray-500 bg-transparent px-2 py-1 text-sm"/>
                     </label>
-                    <label class="text-sm">End
-                        <input type="datetime-local" value={brk.end}
+                    <label class="text-sm">Last day off
+                        <input type="date" value={brk.end}
                                onchange={(e) => update(i, {end: e.currentTarget.value})}
                                class="block mt-1 rounded border border-gray-300 dark:border-gray-500 bg-transparent px-2 py-1 text-sm"/>
                     </label>
+                    <p class="text-xs opacity-60 pb-1.5">Inclusive — a one-day holiday uses the same date twice.</p>
                 </div>
             </div>
         </DisabledEntryRow>

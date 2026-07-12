@@ -72,12 +72,14 @@ export const specialScheduleSchema = z.object({
     }
 });
 
+// Breaks are whole days off — an inclusive date range with no times attached.
+// The engine derives the displayed countdown from the surrounding school days.
 export const breakSchema = z.object({
     label: z.string().min(1).max(80),
-    start: dateTimeStr,
-    end: dateTimeStr,
+    start: dateStr,
+    end: dateStr,
     disabled: z.boolean().default(false)
-}).refine(b => b.start < b.end, {message: "break start must be before its end", path: ["end"]});
+}).refine(b => b.start <= b.end, {message: "break's first day must not be after its last day", path: ["end"]});
 
 export const weekendSchema = z.object({
     startDay: weekdayNum,

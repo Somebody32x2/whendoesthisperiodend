@@ -49,6 +49,19 @@ describe("validateSchoolConfig", () => {
         expect(result.config.normalSchedules[0].endWithWeekend).toBe(false);
     });
 
+    it("accepts a single-day break (start == end) and rejects a reversed or timed break range", () => {
+        const cfg = baseConfig();
+        cfg.breaks = [{label: "Holiday", start: "2026-11-11", end: "2026-11-11"}];
+        expect(validateSchoolConfig(cfg).ok).toBe(true);
+
+        cfg.breaks = [{label: "Backwards", start: "2026-11-12", end: "2026-11-11"}];
+        expect(validateSchoolConfig(cfg).ok).toBe(false);
+
+        // old datetime format must no longer validate
+        cfg.breaks = [{label: "Timed", start: "2026-11-11T08:30", end: "2026-11-11T23:59"}];
+        expect(validateSchoolConfig(cfg).ok).toBe(false);
+    });
+
     it("rejects a school id with spaces", () => {
         const cfg = baseConfig();
         cfg.id = "has spaces!";

@@ -152,7 +152,10 @@
 
 <div class="min-h-screen w-full dark:bg-gray-800 dark:text-white">
     <div class="max-w-5xl mx-auto px-4 py-8">
-        <h1 class="text-2xl font-black mb-6">Schedule Admin</h1>
+        <div class="mb-6">
+            <h1 class="text-2xl font-black">Schedule Admin</h1>
+            <p class="text-sm opacity-60">When Does This Period End? — schedule editor</p>
+        </div>
 
         {#if stage === "loading"}
             <p class="opacity-70">Loading…</p>
@@ -196,13 +199,14 @@
                 <p class="text-sm text-red-500 mb-3">{pickError}</p>
             {/if}
 
+            <h2 class="font-bold mb-2">Pick a school to edit</h2>
             <div class="space-y-2 mb-8">
                 {#if loadingConfig}
                     <p class="opacity-70 text-sm">Loading…</p>
                 {/if}
                 {#each visibleSchools as school (school.id)}
                     <button type="button" onclick={() => pickSchool(school.id)} disabled={loadingConfig}
-                            class="w-full text-left rounded-lg border border-gray-300 dark:border-gray-500 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50">
+                            class="w-full text-left rounded-xl border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-700/40 shadow-sm px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50">
                         <span class="font-semibold">{school.name}</span>
                         <span class="ml-2 text-xs opacity-60">{school.id}</span>
                     </button>

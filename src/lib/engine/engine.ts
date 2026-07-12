@@ -4,7 +4,7 @@
 // move (see metrics.ts).
 import {DateTime} from "luxon";
 import type {ResolvedConfig} from "./resolve";
-import {type BarSpec, evalRangesBar, evalStaticBar, parseLocal} from "./bars";
+import {type BarSpec, evalRangesBar, evalStaticBar} from "./bars";
 
 export interface AnchoredPeriod {
     start: DateTime;
@@ -62,9 +62,9 @@ export function getDayInfo(rc: ResolvedConfig, dateIn: DateTime): DayInfo {
         return {kind: "school", label: String(special.schedule.label), endWithWeekend: false, periods};
     }
 
-    const noon = date.plus({hours: 12});
+    // Breaks are inclusive date ranges — a day is off iff it falls inside one
     for (const brk of rc.enabledBreaks) {
-        if (parseLocal(brk.start, rc.zone) <= noon && noon < parseLocal(brk.end, rc.zone)) {
+        if (brk.start <= iso && iso <= brk.end) {
             return {kind: "break", label: brk.label};
         }
     }
@@ -152,18 +152,23 @@ function weekendInterval(rc: ResolvedConfig, now: DateTime): { start: DateTime, 
     return {start, end};
 }
 
-/** Label for an off-school gap: overlapping break's label, else Weekend, else Until Tomorrow. */
+/** Label for an off-school gap: the break covering most of its days, else Weekend, else Until Tomorrow. */
 function gapLabel(rc: ResolvedConfig, gapStart: DateTime, gapEnd: DateTime, thisWeekend: boolean): string {
-    let best: { label: string, overlap: number } | null = null;
+    // Days strictly inside the gap: the gap's endpoints sit on school days, so only
+    // the dates between them can belong to a break.
+    const firstOff = gapStart.startOf("day").plus({days: 1});
+    const lastOff = gapEnd.startOf("day").minus({days: 1});
+    let best: { label: string, overlapDays: number } | null = null;
     for (const brk of rc.enabledBreaks) {
-        const bStart = parseLocal(brk.start, rc.zone);
-        const bEnd = parseLocal(brk.end, rc.zone);
-        const overlap = Math.min(bEnd.toMillis(), gapEnd.toMillis()) - Math.max(bStart.toMillis(), gapStart.toMillis());
-        if (overlap > 0 && (!best || overlap > best.overlap)) best = {label: brk.label, overlap};
+        const from = brk.start > firstOff.toISODate()! ? brk.start : firstOff.toISODate()!;
+        const to = brk.end < lastOff.toISODate()! ? brk.end : lastOff.toISODate()!;
+        if (from > to) continue;
+        const overlapDays = DateTime.fromISO(to).diff(DateTime.fromISO(from), "days").days + 1;
+        if (!best || overlapDays > best.overlapDays) best = {label: brk.label, overlapDays};
     }
     if (best) return best.label;
 
-    for (let d = gapStart.startOf("day"); d <= gapEnd; d = d.plus({days: 1})) {
+    for (let d = firstOff; d <= lastOff; d = d.plus({days: 1})) {
         if (getDayInfo(rc, d).kind === "weekend") return thisWeekend ? "this Weekend" : "Weekend";
     }
     return "Until Tomorrow";

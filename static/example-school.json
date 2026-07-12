@@ -3,7 +3,10 @@
   "id": "example",
   "name": "Example High School",
   "timezone": "America/New_York",
-  "schoolYear": { "start": "2026-08-17", "end": "2027-05-27" },
+  "schoolYear": {
+    "start": "2026-08-17",
+    "end": "2027-05-27"
+  },
   "colors": {
     "period": "violet",
     "passing": "violet",
@@ -14,66 +17,186 @@
   "normalSchedules": [
     {
       "label": "Weekday",
-      "days": [1, 2, 3, 4],
+      "days": [
+        1,
+        2,
+        3,
+        4
+      ],
       "endWithWeekend": false,
       "disabled": false,
       "periods": [
-        { "start": "08:00", "end": "08:50", "label": "1st Period" },
-        { "start": "08:55", "end": "09:45", "label": "2nd Period" },
-        { "start": "09:50", "end": "10:40", "label": "3rd Period" },
-        { "start": "10:40", "end": "11:30", "label": "Lunch" },
-        { "start": "11:35", "end": "12:25", "label": "4th Period" },
-        { "start": "12:30", "end": "13:20", "label": "5th Period" },
-        { "start": "13:25", "end": "14:15", "label": "6th Period" },
-        { "start": "14:20", "end": "15:10", "label": "7th Period" }
+        {
+          "start": "08:00",
+          "end": "08:50",
+          "label": "1st Period"
+        },
+        {
+          "start": "08:55",
+          "end": "09:45",
+          "label": "2nd Period"
+        },
+        {
+          "start": "09:50",
+          "end": "10:40",
+          "label": "3rd Period"
+        },
+        {
+          "start": "10:40",
+          "end": "11:30",
+          "label": "Lunch"
+        },
+        {
+          "start": "11:35",
+          "end": "12:25",
+          "label": "4th Period"
+        },
+        {
+          "start": "12:30",
+          "end": "13:20",
+          "label": "5th Period"
+        },
+        {
+          "start": "13:25",
+          "end": "14:15",
+          "label": "6th Period"
+        },
+        {
+          "start": "14:20",
+          "end": "15:10",
+          "label": "7th Period"
+        }
       ]
     },
     {
       "label": "Friday",
-      "days": [5],
+      "days": [
+        5
+      ],
       "endWithWeekend": true,
       "disabled": false,
       "periods": [
-        { "start": "08:00", "end": "08:40", "label": "1st Period" },
-        { "start": "08:45", "end": "09:25", "label": "2nd Period" },
-        { "start": "09:30", "end": "10:10", "label": "3rd Period" },
-        { "start": "10:15", "end": "10:55", "label": "Lunch" },
-        { "start": "11:00", "end": "11:40", "label": "4th Period" },
-        { "start": "11:45", "end": "12:25", "label": "5th Period" },
-        { "start": "12:30", "end": "13:00", "label": "Homeroom" }
+        {
+          "start": "08:00",
+          "end": "08:40",
+          "label": "1st Period"
+        },
+        {
+          "start": "08:45",
+          "end": "09:25",
+          "label": "2nd Period"
+        },
+        {
+          "start": "09:30",
+          "end": "10:10",
+          "label": "3rd Period"
+        },
+        {
+          "start": "10:15",
+          "end": "10:55",
+          "label": "Lunch"
+        },
+        {
+          "start": "11:00",
+          "end": "11:40",
+          "label": "4th Period"
+        },
+        {
+          "start": "11:45",
+          "end": "12:25",
+          "label": "5th Period"
+        },
+        {
+          "start": "12:30",
+          "end": "13:00",
+          "label": "Homeroom"
+        }
       ]
     }
   ],
   "specialSchedules": [
     {
       "label": "Exam Days",
-      "days": ["2027-05-26", "2027-05-27"],
+      "days": [
+        "2027-05-26",
+        "2027-05-27"
+      ],
       "specificDayLabels": [
-        ["Period #1 Exam", "Break", "Period #2 Exam"],
-        ["Period #3 Exam", "Break", "Period #4 Exam"]
+        [
+          "Period #1 Exam",
+          "Break",
+          "Period #2 Exam"
+        ],
+        [
+          "Period #3 Exam",
+          "Break",
+          "Period #4 Exam"
+        ]
       ],
       "disabled": false,
       "periods": [
-        { "start": "08:00", "end": "10:00", "label": "Exam 1" },
-        { "start": "10:00", "end": "10:30", "label": "Break" },
-        { "start": "10:35", "end": "12:35", "label": "Exam 2" }
+        {
+          "start": "08:00",
+          "end": "10:00",
+          "label": "Exam 1"
+        },
+        {
+          "start": "10:00",
+          "end": "10:30",
+          "label": "Break"
+        },
+        {
+          "start": "10:35",
+          "end": "12:35",
+          "label": "Exam 2"
+        }
       ]
     },
     {
       "label": "Old Field Day",
-      "days": ["2025-04-18"],
+      "days": [
+        "2025-04-18"
+      ],
       "disabled": true,
       "periods": [
-        { "start": "08:00", "end": "11:00", "label": "Morning Activities" },
-        { "start": "11:05", "end": "14:00", "label": "Afternoon Activities" }
+        {
+          "start": "08:00",
+          "end": "11:00",
+          "label": "Morning Activities"
+        },
+        {
+          "start": "11:05",
+          "end": "14:00",
+          "label": "Afternoon Activities"
+        }
       ]
     }
   ],
   "breaks": [
-    { "label": "Fall Holiday", "start": "2026-09-16T00:00", "end": "2026-09-16T23:59", "disabled": false },
-    { "label": "Thanksgiving Break", "start": "2026-11-24T15:10", "end": "2026-11-29T23:59", "disabled": false },
-    { "label": "Winter Break", "start": "2026-12-18T13:00", "end": "2027-01-03T23:59", "disabled": false },
-    { "label": "Old Spring Break", "start": "2025-03-10T15:10", "end": "2025-03-16T23:59", "disabled": true }
+    {
+      "label": "Fall Holiday",
+      "start": "2026-09-16",
+      "end": "2026-09-16",
+      "disabled": false
+    },
+    {
+      "label": "Thanksgiving Break",
+      "start": "2026-11-25",
+      "end": "2026-11-29",
+      "disabled": false
+    },
+    {
+      "label": "Winter Break",
+      "start": "2026-12-19",
+      "end": "2027-01-03",
+      "disabled": false
+    },
+    {
+      "label": "Old Spring Break",
+      "start": "2025-03-11",
+      "end": "2025-03-16",
+      "disabled": true
+    }
   ],
   "weekend": {
     "startDay": 5,
@@ -104,8 +227,14 @@
       "enabledByDefault": false,
       "disabled": false,
       "ranges": [
-        { "start": "2026-08-17T08:00", "end": "2026-12-18T13:00" },
-        { "start": "2027-01-04T08:00", "end": "2027-05-27T12:35" }
+        {
+          "start": "2026-08-17T08:00",
+          "end": "2026-12-18T13:00"
+        },
+        {
+          "start": "2027-01-04T08:00",
+          "end": "2027-05-27T12:35"
+        }
       ]
     },
     {
