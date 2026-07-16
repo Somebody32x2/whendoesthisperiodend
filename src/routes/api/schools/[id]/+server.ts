@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({params}) => {
     return json(config, {headers: {"cache-control": "no-store"}});
 };
 
-// Save a school's full config — requires a session scoped to this school (or global).
+// Save a school's full config; requires a session scoped to this school (or global).
 export const PUT: RequestHandler = async (event) => {
     const id = event.params.id;
     let ip = "unknown";

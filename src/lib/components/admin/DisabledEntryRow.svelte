@@ -1,7 +1,7 @@
 <script lang="ts">
     // Reusable card/collapsed-row wrapper for editable list entries (schedules, breaks,
     // bars) that can be disabled instead of deleted. Restore semantics (year-shifting
-    // dates) live in the parent editors — this component just wires up the buttons.
+    // dates) live in the parent editors; this component just wires up the buttons.
     import type {Snippet} from "svelte";
 
     interface Props {
@@ -40,7 +40,7 @@
                 </button>
             </div>
         </div>
-        <p class="text-xs opacity-80 mt-1">Restore shifts all dates forward into the current school year — review
+        <p class="text-xs opacity-80 mt-1">Restore shifts the dates into the current school year. Double-check them
             before saving.</p>
     </div>
 {:else}

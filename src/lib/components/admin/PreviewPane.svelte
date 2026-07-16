@@ -28,7 +28,7 @@
         const currentMode = mode;
         const currentSim = simNow;
         // untrack: the runner's methods read AND write its own $state (tick() reads the
-        // snapshot refresh() just wrote) — tracked, the effect would re-trigger itself forever.
+        // snapshot refresh() just wrote); tracked, the effect would re-trigger itself forever.
         untrack(() => {
             if (!snapshot) {
                 runner.setConfig(null);
@@ -128,7 +128,7 @@
         {/if}
 
         <div class="rounded-lg border border-gray-300 dark:border-gray-500 p-4">
-            <p class="text-sm opacity-70 mb-2">State: <b>{runner.snapshot?.state ?? "—"}</b></p>
+            <p class="text-sm opacity-70 mb-2">State: <b>{runner.snapshot?.state ?? "n/a"}</b></p>
             <BarsView bars={runner.bars} metrics={runner.metrics}/>
         </div>
     </div>

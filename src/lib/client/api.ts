@@ -1,5 +1,5 @@
 // Client-side API helpers. Config responses are validated against the shared schema
-// before use — a bad save can never brick the main page.
+// before use; a bad save can never brick the main page.
 import {base} from "$app/paths";
 import {validateSchoolConfig} from "$lib/config/schema";
 import type {SchoolConfig, SchoolSummary} from "$lib/config/types";

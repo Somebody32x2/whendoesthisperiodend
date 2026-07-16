@@ -7,26 +7,12 @@ import {resolveConfig, type ResolvedConfig} from "$lib/engine/resolve";
 import {computeSnapshot, type Snapshot} from "$lib/engine/engine";
 import type {BarSpec} from "$lib/engine/bars";
 import {barMetrics, type BarMetrics} from "$lib/engine/metrics";
-import {prefs, type CustomBar} from "$lib/stores/prefs.svelte";
-
-export function customBarToSpec(bar: CustomBar): BarSpec | null {
-    const start = DateTime.fromISO(bar.start);
-    const end = DateTime.fromISO(bar.end);
-    if (!start.isValid || !end.isValid || start >= end) return null;
-    return {
-        id: `custom-${bar.id}`,
-        label: bar.label || "Custom Bar",
-        color: bar.color,
-        start,
-        end,
-        showDays: true,
-        showEndpoints: false
-    };
-}
+import {prefs} from "$lib/stores/prefs.svelte";
+import {evalCustomBar} from "$lib/client/customBars";
 
 export class ScheduleRunner {
     private rc: ResolvedConfig | null = null;
-    /** "custom" or the school id — the key custom bars + bar prefs are stored under */
+    /** "custom" or the school id; the key custom bars + bar prefs are stored under */
     contextKey = $state("custom");
     /** When set (admin preview), the runner is pinned to this instant */
     fixedNow: DateTime | null = null;
@@ -53,9 +39,13 @@ export class ScheduleRunner {
         return this.rc ? DateTime.now().setZone(this.rc.zone) : DateTime.now();
     }
 
+    /** Next instant any custom bar's spec changes (weekday rollover, period boundary, ...) */
+    private customBoundary: DateTime | null = null;
+
     /** Recompute the snapshot and the visible bar list. */
     refresh(): void {
-        this.snapshot = this.rc ? computeSnapshot(this.rc, this.now()) : null;
+        const now = this.now();
+        this.snapshot = this.rc ? computeSnapshot(this.rc, now) : null;
         const bars: BarSpec[] = [];
         if (this.snapshot && this.rc) {
             const scheduleIds = new Set(["period", "break", "day", "week"]);
@@ -70,17 +60,24 @@ export class ScheduleRunner {
                 }
             }
         }
+        this.customBoundary = null;
         for (const custom of prefs.getCustomBars(this.contextKey)) {
-            const spec = customBarToSpec(custom);
+            const {spec, nextBoundary} = evalCustomBar(custom, now);
             if (spec) bars.push(spec);
+            if (nextBoundary && nextBoundary > now &&
+                (!this.customBoundary || nextBoundary < this.customBoundary)) {
+                this.customBoundary = nextBoundary;
+            }
         }
         this.bars = bars;
     }
 
-    /** Fast-loop update: refresh metrics; roll the snapshot over when it goes stale. */
+    /** Fast-loop update: refresh metrics; roll the snapshot or custom bars over when stale. */
     tick(): void {
         const now = this.now();
-        if (this.rc && (!this.snapshot || now >= this.snapshot.validUntil)) {
+        const snapshotStale = this.rc && (!this.snapshot || now >= this.snapshot.validUntil);
+        const customStale = this.customBoundary !== null && now >= this.customBoundary;
+        if (snapshotStale || customStale) {
             this.refresh();
         }
         const metrics: Record<string, BarMetrics> = {};

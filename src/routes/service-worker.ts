@@ -58,7 +58,7 @@ worker.addEventListener('fetch', (event) => {
 
     const url = new URL(event.request.url);
 
-    // Never intercept API requests — schedule config edits must always reach the network
+    // Never intercept API requests; schedule config edits must always reach the network
     if (url.pathname.includes('/api/')) return;
 
     // don't try to handle e.g. data: URIs

@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {BarConfig, RangesBarConfig, StaticBarConfig} from "$lib/config/types";
-    import {BAR_COLOR_NAMES, BAR_COLORS, type BarColor} from "$lib/config/colors";
+    import type {BarColor} from "$lib/config/colors";
+    import ColorSelect from "$lib/components/ColorSelect.svelte";
     import DisabledEntryRow from "./DisabledEntryRow.svelte";
     import {rederiveEntry} from "$lib/config/yearShift";
 
@@ -13,7 +14,7 @@
     let {bars, schoolYear, onchange}: Props = $props();
 
     // Patch may carry fields from either bar kind, or be a full replacement entry
-    // (e.g. from rederiveEntry) — narrowed back to BarConfig on write.
+    // (e.g. from rederiveEntry); narrowed back to BarConfig on write.
     function update(i: number, patch: Record<string, unknown>) {
         onchange(bars.map((b, idx) => idx === i ? ({...b, ...patch} as BarConfig) : b));
     }
@@ -85,15 +86,10 @@
                                onchange={(e) => update(i, {id: e.currentTarget.value})}
                                class="block mt-1 rounded border border-gray-300 dark:border-gray-500 bg-transparent px-2 py-1 text-sm"/>
                     </label>
-                    <label class="text-sm">Color
-                        <span class="inline-block w-3 h-3 rounded-full ml-1 align-middle"
-                              style="background-color: {BAR_COLORS[bar.color]}"></span>
-                        <select value={bar.color}
-                                onchange={(e) => update(i, {color: e.currentTarget.value as BarColor})}
-                                class="block mt-1 rounded border border-gray-300 dark:border-gray-500 bg-transparent dark:bg-gray-700 px-2 py-1 text-sm">
-                            {#each BAR_COLOR_NAMES as c (c)}<option value={c}>{c}</option>{/each}
-                        </select>
-                    </label>
+                    <div class="text-sm">
+                        <p class="mb-1">Color</p>
+                        <ColorSelect value={bar.color} onchange={(c: BarColor) => update(i, {color: c})}/>
+                    </div>
                 </div>
 
                 {#if bar.kind === "static"}

@@ -52,7 +52,8 @@
                                onchange={(e) => update(i, {end: e.currentTarget.value})}
                                class="block mt-1 rounded border border-gray-300 dark:border-gray-500 bg-transparent px-2 py-1 text-sm"/>
                     </label>
-                    <p class="text-xs opacity-60 pb-1.5">Inclusive — a one-day holiday uses the same date twice.</p>
+                    <p class="text-xs opacity-60 pb-1.5">Both days inclusive; a one-day holiday uses the same date
+                        twice.</p>
                 </div>
             </div>
         </DisabledEntryRow>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    // The bar list — extracted from the old +page.svelte / mini page so the main page,
+    // The bar list; extracted from the old +page.svelte / mini page so the main page,
     // /mini and the admin preview all render identically.
     import type {BarSpec} from "$lib/engine/bars";
     import type {BarMetrics} from "$lib/engine/metrics";

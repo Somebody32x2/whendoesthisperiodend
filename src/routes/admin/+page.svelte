@@ -154,7 +154,7 @@
     <div class="max-w-5xl mx-auto px-4 py-8">
         <div class="mb-6">
             <h1 class="text-2xl font-black">Schedule Admin</h1>
-            <p class="text-sm opacity-60">When Does This Period End? — schedule editor</p>
+            <p class="text-sm opacity-60">Schedule editor for When Does This Period End?</p>
         </div>
 
         {#if stage === "loading"}

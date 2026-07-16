@@ -139,8 +139,8 @@
         <p class="mt-6 mx-6 text-red-500 text-center">Couldn't load this school's schedule: {loadError}</p>
     {/if}
     {#if selected === "custom" && runner.bars.length === 0}
-        <p class="mt-10 mx-6 text-center opacity-70">No custom bars yet — open the
-            <b>⚙ settings drawer</b> on the right to add some.</p>
+        <p class="mt-10 mx-6 text-center opacity-70">No custom bars yet. Add one from the gear menu in the top
+            right.</p>
     {/if}
 
     <div class="w-full flex items-center justify-center" id="constantPageContentContainer">

@@ -1,6 +1,6 @@
 <script lang="ts">
     // Owns the editable draft for one school: validation is recomputed on every edit
-    // (shared schema — never drifts from the server), and children mutate it only via
+    // (shared schema; never drifts from the server), and children mutate it only via
     // immutable onchange callbacks that reassign a field of `draft`.
     import {base} from "$app/paths";
     import {validateSchoolConfig} from "$lib/config/schema";
@@ -30,8 +30,8 @@
     const TABS: { key: TabKey, label: string, note: string }[] = [
         {
             key: "schedules", label: "Normal Schedules",
-            note: "The default bell schedule for each weekday — the regular week, early-release Friday, and so on. " +
-                "Special schedules and breaks always take priority over these on their dates, so this tab rarely needs to change."
+            note: "The default bell schedule for each weekday: the regular week, early-release Friday, and so on. " +
+                "Special schedules and breaks always take priority on their dates, so this tab rarely needs to change."
         },
         {
             key: "special", label: "Special Schedules",
@@ -40,8 +40,8 @@
         },
         {
             key: "breaks", label: "Breaks",
-            note: "Whole days with no school — holidays, long weekends, summer. Just the first and last day off; " +
-                "the countdown works out the exact start and end from the school days around each break."
+            note: "Whole days with no school: holidays, long weekends, summer. Enter just the first and last day off; " +
+                "the countdown works out exact start and end times from the school days around each break."
         },
         {
             key: "weekend", label: "Weekend & Colors",
@@ -59,8 +59,8 @@
         },
         {
             key: "preview", label: "Preview",
-            note: "Exactly what the main page will show for this config — live, or at any simulated moment. Worth " +
-                "checking exam days and breaks here before saving."
+            note: "What the main page will show for this config, either live or at a chosen moment. Check exam days " +
+                "and breaks here before saving."
         }
     ];
     let activeTab = $state<TabKey>("schedules");

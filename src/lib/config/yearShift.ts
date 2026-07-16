@@ -1,6 +1,6 @@
 // "Restore" support for disabled legacy entries: shift every date in an entry
 // forward by whole years so its earliest date lands inside the current school year,
-// then re-enable it. Weekday drift is expected — the admin UI presents the result
+// then re-enable it. Weekday drift is expected; the admin UI presents the result
 // as a draft to hand-adjust before saving.
 import {DateTime} from "luxon";
 import type {BarConfig, BreakConfig, SpecialScheduleConfig} from "./types";

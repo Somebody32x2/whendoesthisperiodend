@@ -72,7 +72,7 @@ export const specialScheduleSchema = z.object({
     }
 });
 
-// Breaks are whole days off — an inclusive date range with no times attached.
+// Breaks are whole days off; an inclusive date range with no times attached.
 // The engine derives the displayed countdown from the surrounding school days.
 export const breakSchema = z.object({
     label: z.string().min(1).max(80),

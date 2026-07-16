@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {SchoolConfig, WeekendConfig} from "$lib/config/types";
-    import {BAR_COLOR_NAMES, BAR_COLORS, type BarColor} from "$lib/config/colors";
+    import type {BarColor} from "$lib/config/colors";
+    import ColorSelect from "$lib/components/ColorSelect.svelte";
 
     type Colors = SchoolConfig["colors"];
 
@@ -62,16 +63,11 @@
         <h3 class="font-bold mb-2">Colors</h3>
         <div class="flex flex-wrap gap-4">
             {#each COLOR_KEYS as key (key)}
-                <label class="text-sm capitalize">
-                    {key}
-                    <span class="inline-block w-3 h-3 rounded-full ml-1 align-middle"
-                          style="background-color: {BAR_COLORS[colors[key]]}"></span>
-                    <select value={colors[key]}
-                            onchange={(e) => updateColor(key, e.currentTarget.value as BarColor)}
-                            class="block mt-1 rounded border border-gray-300 dark:border-gray-500 bg-transparent dark:bg-gray-700 px-2 py-1 text-sm">
-                        {#each BAR_COLOR_NAMES as c (c)}<option value={c}>{c}</option>{/each}
-                    </select>
-                </label>
+                <div class="text-sm capitalize">
+                    <p class="mb-1">{key}</p>
+                    <ColorSelect value={colors[key]} title="{key} bar color"
+                                 onchange={(c: BarColor) => updateColor(key, c)}/>
+                </div>
             {/each}
         </div>
     </section>

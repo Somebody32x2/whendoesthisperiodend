@@ -42,7 +42,7 @@ function anchorPeriods(date: DateTime, periods: { start: string, end: string, la
 }
 
 /**
- * Classify a calendar day. Always returns freshly-built objects — config data is never
+ * Classify a calendar day. Always returns freshly-built objects; config data is never
  * touched (this is what fixes the old findSchedule mutation/aliasing bugs).
  * Priority: special schedule -> break (covering noon of the day) -> normal schedule -> weekend.
  */
@@ -62,7 +62,7 @@ export function getDayInfo(rc: ResolvedConfig, dateIn: DateTime): DayInfo {
         return {kind: "school", label: String(special.schedule.label), endWithWeekend: false, periods};
     }
 
-    // Breaks are inclusive date ranges — a day is off iff it falls inside one
+    // Breaks are inclusive date ranges; a day is off iff it falls inside one
     for (const brk of rc.enabledBreaks) {
         if (brk.start <= iso && iso <= brk.end) {
             return {kind: "break", label: brk.label};

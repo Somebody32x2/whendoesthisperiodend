@@ -10,7 +10,7 @@ export const GET: RequestHandler = async () => {
     return json(listSchools(), {headers: {"cache-control": "no-store"}});
 };
 
-// Create a new school — global (*) scope only.
+// Create a new school; global (*) scope only.
 export const POST: RequestHandler = async (event) => {
     let ip = "unknown";
     try {

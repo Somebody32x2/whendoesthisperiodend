@@ -16,7 +16,7 @@ export interface BarSpec {
     showEndpoints: boolean;
 }
 
-export function parseLocal(value: string, zone: string): DateTime {
+export function parseLocal(value: string, zone?: string): DateTime {
     return DateTime.fromISO(value, {zone});
 }
 
@@ -38,7 +38,7 @@ function rangeLabel(bar: RangesBarConfig, i: number): string {
 
 // Picks the sub-range (or gap between ranges) that `now` falls in.
 // nextBoundary is the next instant at which this bar's spec changes (null once past the last range).
-export function evalRangesBar(bar: RangesBarConfig, zone: string, now: DateTime): { spec: BarSpec, nextBoundary: DateTime | null } {
+export function evalRangesBar(bar: RangesBarConfig, zone: string | undefined, now: DateTime): { spec: BarSpec, nextBoundary: DateTime | null } {
     const ranges = bar.ranges.map(r => ({
         start: parseLocal(r.start, zone),
         end: parseLocal(r.end, zone)

@@ -19,7 +19,7 @@ export interface Session {
     created: number;
     expires: number;
     ip: string;
-    /** Which password line granted access (school id or "*") — logged, never the password itself */
+    /** Which password line granted access (school id or "*"); logged, never the password itself */
     pwdLabel: string;
 }
 

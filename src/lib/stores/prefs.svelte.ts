@@ -1,16 +1,9 @@
 // localStorage-backed reactive preferences (Svelte 5 runes).
 import {browser} from "$app/environment";
-import type {BarColor} from "$lib/config/colors";
 import type {SchoolSummary} from "$lib/config/types";
+import {type CustomBar, normalizeCustomBar} from "$lib/client/customBars";
 
-export interface CustomBar {
-    id: string;
-    label: string;
-    /** datetime-local strings, interpreted in the viewer's timezone */
-    start: string;
-    end: string;
-    color: BarColor;
-}
+export type {CustomBar};
 
 function read<T>(key: string, fallback: T): T {
     if (!browser) return fallback;
@@ -26,7 +19,7 @@ function write(key: string, value: unknown): void {
     if (!browser) return;
     try {
         localStorage.setItem(key, JSON.stringify(value));
-    } catch { /* storage full/blocked — non-fatal */
+    } catch { /* storage full/blocked; non-fatal */
     }
 }
 
@@ -63,7 +56,8 @@ class Prefs {
     }
 
     getCustomBars(key: string): CustomBar[] {
-        return this.customBars[key] ?? [];
+        // normalize: bars saved before the kind field existed load as static bars
+        return (this.customBars[key] ?? []).map(normalizeCustomBar);
     }
 
     setCustomBars(key: string, bars: CustomBar[]) {

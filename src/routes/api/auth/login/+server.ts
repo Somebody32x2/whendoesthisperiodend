@@ -19,7 +19,7 @@ export const POST: RequestHandler = async (event) => {
     }
 
     if (throttled(ip)) {
-        return json({ok: false, error: "Too many failed attempts — try again later."}, {status: 429});
+        return json({ok: false, error: "Too many failed attempts. Try again later."}, {status: 429});
     }
 
     const body = await event.request.json().catch(() => null);
